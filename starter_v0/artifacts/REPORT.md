@@ -29,7 +29,8 @@
 
 **Link dùng thử (deploy):**
 
-> URL: 
+UI local: chạy `streamlit run app.py` trong `starter_v0/`. Cloudflare tunnel chưa
+được mở trong môi trường này nên chưa có URL public.
 
 ## A2. Tool agent có
 
@@ -74,7 +75,7 @@ Mẹo thử khó: hỏi "Repo langchain có bao nhiêu sao?" (thiếu owner, age
 
 ## B1. Version Evidence
 
-Fill from `artifacts/version_log.csv` and `runs/*.json`.
+Các số liệu dưới đây được lấy từ `artifacts/version_log.csv` và `runs/*.json`.
 
 Mọi run đều trên `data/eval_base.json` (20 case: 14 single turn, 6 multi turn). Mỗi version chỉ đổi **một** artifact để kiểm chứng **một** giả thuyết; hash trong cột Artifact Version cho thấy file nào đổi.
 
@@ -85,6 +86,8 @@ Mọi run đều trên `data/eval_base.json` (20 case: 14 single turn, 6 multi t
 | v2 | `tools.yaml` | `v2+p718eda401f27+t58b949f3cad1` | Description tool mơ hồ làm model bỏ sót args (R11 thiếu `response_type`). Viết lại description (làm gì / khi nào dùng / khi nào không) + convention args + `response_type` bắt buộc | 0.95 | case **0.90** ⬇ · routing 0.9 · args 0.9 · multi 0.83 | `runs/v2_B_base_openai_20261110T110749592420.json` |
 | v3 | `system_prompt.md` | `v3+p3c4f06917491+t58b949f3cad1` | v2 gây regression: R01 hỏi lại thừa, M06 gọi lại tool user đã huỷ. Thêm routing rules ("tên người đã biết → tự map handle, không hỏi lại") + rule multi-turn "chỉ theo intent hiện tại, bỏ phần đã huỷ" | 0.90 | case **1.0** · routing 1.0 · args 1.0 · multi 1.0 | `runs/v3_B_base_openai_20261110T111803928857.json` |
 | v4 | `tools.yaml` (+4 tool mới: `wikipedia`, `hackernews`, `github_repo`, `datetime_now`) | `v4+p3c4f06917491+t92f0376be02d` | Tăng từ 10 lên 14 tool có thể làm nhiễu routing; nếu description tool mới nói rõ khi nào dùng/không dùng thì base không bị regression | 1.0 | case **1.0** · routing 1.0 · args 1.0 · multi 1.0 | `runs/v4_B_base_openai_20261110T115937405999.json` |
+| v5 | `system_prompt.md`, `tools.yaml`, `eval_group.json` | `v5+pa483b9698876+te34a8319a8a0` | G02 cần truyền rõ `kind=top`; G10 cần source items trong context trước khi gọi `format` | 0.80 | case **0.90** · routing 0.90 · args 0.90 · multi 1.0 | `runs/v5_B_group_openai_20261110T142404965024.json` |
+| v6 | `system_prompt.md` | `v6+pc48c9591a114+te34a8319a8a0` | Không lặp lại cùng tool với cùng args trong một request, sửa duplicate `github_repo` ở G03 | 0.90 | case **1.0** · routing 1.0 · args 1.0 · multi 1.0 | `runs/v6_B_group_openai_20261110T142456849983.json` |
 
 Nhận xét:
 
@@ -113,11 +116,16 @@ Phân loại nguyên nhân v0 (7 case fail): 5/7 do **prompt** (chỉ dẫn xấ
 
 ## B3. Team Eval Cases
 
-List the 10 cases added to `data/eval_group.json` (5 single turn + 5 multi turn).
+Nhóm đã thêm 10 case vào `data/eval_group.json` (5 single turn + 5 multi turn).
 
 | Case ID | What It Tests | Expected Tool/Behavior | Result |
 |---|---|---|---|
-|  |  |  |  |
+| G01–G05 | tool mới và clarify khi thiếu owner | wikipedia, hackernews, github_repo, datetime_now, clarify | v6: 5/5 PASS |
+| G06–G10 | chuyển intent, xác nhận send, format multi-turn | wikipedia, github_repo, send/no_tool, format | v6: 5/5 PASS |
+
+Group eval v3 ban đầu đạt 8/10: G02 thiếu `kind="top"` và G10 chưa có
+source items trong context. v5 đạt 9/10; v6 thêm chống duplicate tool call
+và đạt **10/10**, mọi metric đều 1.0.
 
 ## B4. Live Chat Evidence
 
@@ -125,20 +133,29 @@ Use `transcripts/*.transcript.json`.
 
 | Turn | User Request | Tool Calls | Version Evidence | Outcome |
 |---|---|---|---|---|
-|  |  |  |  |  |
+| v4 turn 1–4 | Alan Turing; giờ Tokyo; repo `psf/requests`; top 3 Hacker News | `wikipedia`, `datetime_now`, `github_repo`, `hackernews` | `v4_openai_20261110T114813855626.transcript.json` | 4 lượt hoàn tất, có tool results và câu trả lời có nguồn |
+| v6 turn 1–9 | Điện thoại thông minh đầu tiên; giá vàng; đọc URL; repo GitHub; thiếu URL rồi bổ sung | `wikipedia`, `lookup`, `fetch`, `github_repo`, `clarify`, `fetch` | `v6_openai_20261110T145643174517.transcript.json` | Multi-turn thiếu thông tin hoạt động: hỏi URL ở turn 8, nhận URL và fetch ở turn 9 |
+| v6 turn 1–6 | Chat UI mới: câu hỏi thường, kiến thức, và đọc URL | `fetch` ở turn 6; các lượt khác trả lời trực tiếp | `v6_openai_20261110T150755414747.transcript.json` | 6 lượt được lưu thành transcript riêng |
+| v6 turn 7 | Yêu cầu gửi nội dung trang GitHub lên Telegram | `clarify(response_type="yes_no")` → `send(confirmed=true)` | `v6_openai_20261110T150755414747.transcript.json` | Agent hỏi xác nhận trước; chỉ gọi `send` sau khi người dùng đồng ý |
+
+Ghi chú: transcript ghi nhận `send` với `confirmed=true`. Sau đó đã kiểm tra tích hợp
+Telegram thật bằng bot/channel test và xác nhận tin nhắn được gửi thành công. Token và
+chat ID không được ghi vào report, transcript hoặc repository.
 
 ## B5. Bonus Evidence
 
-Only fill if your team did bonus.
+Các bonus đã làm và bằng chứng tương ứng:
 
 | Bonus | Evidence File | What Worked | Risk / Guardrail |
 |---|---|---|---|
-| send (Telegram) |  |  |  |
-| arXiv/company policy |  |  |  |
-| UI |  |  |  |
-| Tool unit tests (`tests/`) | `pytest` output; `tests/test_tools_todo.py` | Điền 9 stub: clarify (choice + options), format (sections gom nhóm, thread đánh số, items rỗng ở cả 5 template), send (confirmed → đúng 1 POST với token/chat_id/text; thiếu env → error dict, không gọi mạng), policy (query rỗng/stopword, lọc `policy_area`, dòng injection vào `untrusted_text` chứ không vào `facts`) | Mọi test offline: `conftest.py` chặn HTTP thật, xoá env key trước mỗi test |
+| send (Telegram) | `tests/test_tools_todo.py`, `transcripts/v6_openai_20261110T150755414747.transcript.json`, kiểm tra bot/channel thật | Live chat hỏi `yes_no`, sau đó chỉ gọi `send` với `confirmed=true`; unit test kiểm tra POST; bot test gửi thành công tới channel | Không gửi nếu chưa xác nhận; giữ token/chat ID ngoài source control |
+| arXiv/company policy | `tests/test_tools_todo.py` | policy có trust boundary; arXiv được đăng ký | Cần nguồn/network khi chạy live |
+| UI | `app.py`, `poster.html`, `transcripts/v6_openai_20261110T150755414747.transcript.json` | Streamlit UI có lịch sử chat, nút tạo chat mới, lưu transcript sau mỗi lượt và hiển thị tool dưới tin nhắn | Cần provider key khi chạy; chưa có public tunnel URL |
+| Tool unit tests (`tests/`) | `tests/test_tools_todo.py`, `tests/test_tools_new.py`, `tests/test_tools_regression.py` | Test core stubs, 4 tool mới và 6 nhóm regression boundary | Mọi test offline; cần cài dependency từ `requirements.txt` |
 
-Tool unit tests: số test đã viết, số bug tìm được trong tool có sẵn (nếu có), và một ví dụ lỗi mà unit test bắt được nhưng eval không bắt được.
+Tool unit tests: toàn bộ suite hiện đạt `156 passed, 0 failed, 0 skipped`.
+Regression suite đã ghi nhận 6 nhóm bug boundary; ví dụ B4 (input rỗng vẫn gọi API trả phí)
+được unit test bắt nhưng eval routing không bắt được.
 
 ### Challenge+: bug tìm được bằng input biên (Sơn)
 
@@ -179,26 +196,32 @@ Những gì gắn với **một tool cụ thể**: convention của args (handle
 
 ## B7. Small Local Model Challenge (bonus)
 
-Only fill if your team did the local model challenge.
+Local model challenge chưa chạy trong workspace này; không có Ollama/model local để
+ghi run JSON hoặc metric đáng tin cậy.
 
 | Version | Model (provider) | Prompt/Tools | case_accuracy | tool_routing | argument | multiturn | Run File |
 |---|---|---|---|---|---|---|---|
-| v3 | (cloud) | v3 |  |  |  |  |  |
-| v3-... | (ollama) | v3 |  |  |  |  |  |
-| v3-... | (ollama) | v3 |  |  |  |  |  |
-| v4-local |  |  |  |  |  |  |  |
-| v5-local |  |  |  |  |  |  |  |
+| v3 | openai | v3 | v3 prompt/tools | 1.0 | 1.0 | 1.0 | `runs/v3_B_base_openai_20261110T111803928857.json` |
+| v3-local-1 | chưa chạy | — | — | — | — | — | — |
+| v3-local-2 | chưa chạy | — | — | — | — | — | — |
+| v4-local | chưa chạy | — | — | — | — | — | — |
+| v5-local | chưa chạy | — | — | — | — | — | — |
 
 Lỗi đặc thù của model nhỏ (đếm từ run JSON):
 
 | Failure Pattern | Count | Example Case | Fix Tried | Helped? |
 |---|---|---|---|---|
-| wrong / hallucinated tool |  |  |  |  |
-| invalid JSON args (`_invalid_json_arguments`) |  |  |  |  |
-| no tool call / answered directly |  |  |  |  |
-| missed `clarify` |  |  |  |  |
-| repeated / unnecessary calls |  |  |  |  |
+| wrong / hallucinated tool | N/A | — | — | — |
+| invalid JSON args (`_invalid_json_arguments`) | N/A | — | — | — |
+| no tool call / answered directly | N/A | — | — | — |
+| missed `clarify` | N/A | — | — | — |
+| repeated / unnecessary calls | N/A | — | — | — |
 
 - Cái gì giúp model nhỏ gọi tool đúng hơn nhất? Bằng chứng?
 - Bản prompt tối ưu cho local chạy trên model cloud thì sao?
 - Khi nào nhóm sẽ chọn model local thay vì cloud cho agent này?
+
+Các câu hỏi B7 chưa có kết quả vì nhóm chưa chạy Ollama. Do đó chưa kết luận
+prompt cloud có tương đương prompt local hay chưa; nếu cần chạy offline trong
+tương lai, sẽ ưu tiên model local cho dữ liệu nhạy cảm hoặc khi cần giảm chi phí,
+sau khi đo lại routing và argument accuracy trên cùng dataset.
