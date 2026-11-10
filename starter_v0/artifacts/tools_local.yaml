@@ -1,0 +1,77 @@
+# Local small-model tool declarations (B7, v5-local).
+# Only the 7 core research tools; short descriptions, one example call each,
+# fewer optional fields. Names/params match tools/__init__.py so the same code runs.
+# Cloud agent keeps using artifacts/tools.yaml (14 tools).
+tools:
+  - name: clarify
+    description: >-
+      Ask the user ONE question. Use when a required detail is missing (no account, no URL),
+      or to get a yes/no confirmation before sending. This is the ONLY way to ask the user.
+      Example: clarify(question="Bạn muốn xem tweet của ai?", response_type="text")
+    parameters:
+      type: object
+      properties:
+        question: {type: string, description: "Short question."}
+        response_type: {type: string, enum: [text, yes_no], description: "text = ask for missing info; yes_no = confirm before send."}
+      required: [question, response_type]
+
+  - name: timeline
+    description: >-
+      Recent posts BY one X/Twitter account. Example: timeline(screenname="sama", limit=5)
+    parameters:
+      type: object
+      properties:
+        screenname: {type: string, description: "Handle without @."}
+        limit: {type: integer, description: "Integer number of posts, default 5."}
+      required: [screenname]
+
+  - name: social_search
+    description: >-
+      X/Twitter posts ABOUT a topic. Example: social_search(query="GPT-5", search_type="Latest")
+    parameters:
+      type: object
+      properties:
+        query: {type: string, description: "Core keyword only."}
+        search_type: {type: string, enum: [Latest, Top], description: "Top = popular/top; otherwise Latest."}
+        limit: {type: integer, description: "Integer, default 5."}
+      required: [query]
+
+  - name: lookup
+    description: >-
+      Web search / news. Example: lookup(query="AI", topic="news", timeframe="day")
+    parameters:
+      type: object
+      properties:
+        query: {type: string, description: "Core keyword only, no 'news'/'today'."}
+        topic: {type: string, enum: [general, news], description: "news for news questions."}
+        timeframe: {type: string, enum: [day, week, month, year], description: "today=day, this week=week."}
+      required: [query]
+
+  - name: fetch
+    description: >-
+      Read one URL the user gave. Never invent a URL. Example: fetch(url="https://example.com/post")
+    parameters:
+      type: object
+      properties:
+        url: {type: string, description: "Exact URL from the user."}
+      required: [url]
+
+  - name: format
+    description: >-
+      Turn items ALREADY returned by other tools into a digest. Never call it without items.
+    parameters:
+      type: object
+      properties:
+        items: {type: array, items: {type: object}, description: "Items from previous tool results."}
+        template: {type: string, enum: [brief, sections, bullets], description: "Layout."}
+      required: [items, template]
+
+  - name: send
+    description: >-
+      Send text to Telegram. Only AFTER the user said yes to a clarify yes_no question; then confirmed=true.
+    parameters:
+      type: object
+      properties:
+        text: {type: string, description: "Text to send."}
+        confirmed: {type: boolean, description: "true only after user said yes."}
+      required: [text, confirmed]

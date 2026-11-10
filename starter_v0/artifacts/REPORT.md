@@ -80,7 +80,7 @@ Mẹo thử khó: hỏi "Repo langchain có bao nhiêu sao?" (thiếu owner, age
 
 Các số liệu dưới đây được lấy từ `artifacts/version_log.csv` và `runs/*.json`.
 
-Mọi run đều trên `data/eval_base.json` (20 case: 14 single turn, 6 multi turn). Mỗi version chỉ đổi **một** artifact để kiểm chứng **một** giả thuyết; hash trong cột Artifact Version cho thấy file nào đổi.
+v0–v4 và v6-base chạy trên `data/eval_base.json` (20 case: 14 single turn, 6 multi turn); v5, v6 chạy trên `data/eval_group.json` (10 case của nhóm, Metric Before của v5 là group eval v3 = 0.80). Mỗi version chỉ đổi **một** artifact để kiểm chứng **một** giả thuyết; hash trong cột Artifact Version cho thấy file nào đổi.
 
 | Version | Changed Artifact | Artifact Version | Hypothesis | Metric Before | Metric After | Run File |
 |---|---|---|---|---:|---:|---|
@@ -91,12 +91,14 @@ Mọi run đều trên `data/eval_base.json` (20 case: 14 single turn, 6 multi t
 | v4 | `tools.yaml` (+4 tool mới: `wikipedia`, `hackernews`, `github_repo`, `datetime_now`) | `v4+p3c4f06917491+t92f0376be02d` | Tăng từ 10 lên 14 tool có thể làm nhiễu routing; nếu description tool mới nói rõ khi nào dùng/không dùng thì base không bị regression | 1.0 | case **1.0** · routing 1.0 · args 1.0 · multi 1.0 | `runs/v4_B_base_openai_20261110T115937405999.json` |
 | v5 | `system_prompt.md`, `tools.yaml`, `eval_group.json` | `v5+pa483b9698876+te34a8319a8a0` | G02 cần truyền rõ `kind=top`; G10 cần source items trong context trước khi gọi `format` | 0.80 | case **0.90** · routing 0.90 · args 0.90 · multi 1.0 | `runs/v5_B_group_openai_20261110T142404965024.json` |
 | v6 | `system_prompt.md` | `v6+pc48c9591a114+te34a8319a8a0` | Không lặp lại cùng tool với cùng args trong một request, sửa duplicate `github_repo` ở G03 | 0.90 | case **1.0** · routing 1.0 · args 1.0 · multi 1.0 | `runs/v6_B_group_openai_20261110T142456849983.json` |
+| v6-base | không đổi (chạy lại v6 trên base) | `v6+pc48c9591a114+te34a8319a8a0` | v5/v6 chỉ được đo trên group eval; prompt/tools cuối không được làm hỏng 20 case base | 1.0 (v4 base) | case **1.0** · routing 1.0 · args 1.0 · multi 1.0 | `runs/v6_B_base_openai_20261110T164928793989.json` |
 
 Nhận xét:
 
 - Bước nhảy lớn nhất (0.65 → 0.95) đến từ việc **bỏ chỉ dẫn xấu trong prompt**, không phải từ việc mô tả tool.
 - v2 là một ví dụ regression thật: làm `clarify` "mạnh" hơn thì sửa được R11 nhưng model trở nên quá thận trọng (hỏi lại cả khi đã có tên người). Bài học: mỗi rule "hãy làm X" cần đi kèm ranh giới "khi nào KHÔNG làm X".
 - v4 xác nhận thêm tool không làm hỏng routing cũ khi mỗi tool có mục "KHÔNG DÙNG khi…" chỉ sang tool đúng.
+- Bản cuối (v6) đạt 1.0 trên **cả** base (20/20) và group (10/10), nên các sửa đổi cho group eval không gây regression trên base.
 
 ## B2. Failure Analysis
 
@@ -193,38 +195,46 @@ Những gì gắn với **một tool cụ thể**: convention của args (handle
 
 **What would you improve next?**
 - Chạy mỗi version 2–3 lần để đo độ dao động. Ở temperature 0, `gpt-4o-mini` vẫn không hoàn toàn deterministic, nên R03 PASS ở v1 có thể là may.
-- Viết thêm eval case cho 4 tool mới và các ranh giới khó (ví dụ "repo langchain" thiếu owner → clarify; "hôm nay thứ mấy" → `datetime_now` chứ không phải `lookup`).
+- Mở rộng group eval (hiện 10 case, đã gồm 4 tool mới và case thiếu owner G05) với các ranh giới khó hơn, ví dụ "hôm nay thứ mấy" → `datetime_now` chứ không phải `lookup`, hoặc "tin mới trên Hacker News về Rust" → `hackernews` hay `lookup`.
 - Eval chấm args mềm hơn (so khớp keyword thay vì chuỗi chính xác) để giảm false fail.
-- Thử prompt ngắn hơn cho model local (B7).
+- Model local (B7): giữ tools v6 nhưng ghép prompt local với rule map handle của cloud, chạy lặp nhiều lần để đo dao động.
 
 ## B7. Small Local Model Challenge (bonus)
 
-Local model challenge chưa chạy trong workspace này; không có Ollama/model local để
-ghi run JSON hoặc metric đáng tin cậy.
+Chạy bằng Ollama trên máy cá nhân (GTX 1650 4 GB, RAM 20 GB), 2 model có tag `tools`: `llama3.2:3b` và `qwen2.5:7b`. Mọi run dùng `data/eval_base.json` (20 case). Baseline dùng prompt/tools **v6** (bản tốt nhất của nhóm, đạt 1.0 trên cloud), không sửa gì. Bản cho local nằm riêng ở `artifacts/system_prompt_local.md` và `artifacts/tools_local.yaml`, nên bản cloud không bị ảnh hưởng. Few-shot trong prompt local được viết **khác** câu hỏi trong eval để tránh "học thuộc đề".
 
 | Version | Model (provider) | Prompt/Tools | case_accuracy | tool_routing | argument | multiturn | Run File |
-|---|---|---|---|---|---|---|---|
-| v3 | openai | v3 | v3 prompt/tools | 1.0 | 1.0 | 1.0 | `runs/v3_B_base_openai_20261110T111803928857.json` |
-| v3-local-1 | chưa chạy | — | — | — | — | — | — |
-| v3-local-2 | chưa chạy | — | — | — | — | — | — |
-| v4-local | chưa chạy | — | — | — | — | — | — |
-| v5-local | chưa chạy | — | — | — | — | — | — |
+|---|---|---|---:|---:|---:|---:|---|
+| v6 | gpt-4o-mini (openai) | v6 / v6 | 1.00 | 1.00 | 1.00 | 1.00 | `runs/v6_B_base_openai_20261110T164928793989.json` |
+| v6-llama3b | llama3.2:3b (ollama) | v6 / v6 | 0.30 | 0.60 | 0.30 | 0.33 | `runs/v6-llama3b_B_base_ollama_20261110T170616998043.json` |
+| v6-qwen7b | qwen2.5:7b (ollama) | v6 / v6 | 0.85 | 0.85 | 0.85 | 1.00 | `runs/v6-qwen7b_B_base_ollama_20261110T171200081499.json` |
+| v4-local-llama3b | llama3.2:3b (ollama) | local / v6 | **0.50** | 0.60 | 0.50 | 0.67 | `runs/v4-local-llama3b_B_base_ollama_20261110T171613731365.json` |
+| v4-local-qwen7b | qwen2.5:7b (ollama) | local / v6 | 0.80 | 0.80 | 0.80 | 1.00 | `runs/v4-local-qwen7b_B_base_ollama_20261110T172116307521.json` |
+| v5-local-llama3b | llama3.2:3b (ollama) | local / local | 0.40 | 0.40 | 0.40 | 0.33 | `runs/v5-local-llama3b_B_base_ollama_20261110T172341291808.json` |
+| v5-local-qwen7b | qwen2.5:7b (ollama) | local / local | 0.75 | 0.75 | 0.75 | 0.83 | `runs/v5-local-qwen7b_B_base_ollama_20261110T172721461257.json` |
+| v5-local (kiểm tra ngược) | gpt-4o-mini (openai) | local / local | 0.95 | 0.95 | 0.95 | 1.00 | `runs/v5-local-gpt4omini_B_base_openai_20261110T172918430016.json` |
 
-Lỗi đặc thù của model nhỏ (đếm từ run JSON):
+Hai vòng tối ưu, mỗi vòng một giả thuyết:
+- **v4-local** chỉ đổi prompt: viết lại thành prompt ngắn dạng "thứ tự quyết định" (ngoài phạm vi → gửi → thiếu info → route), có rule "muốn hỏi phải gọi `clarify`", rule args (query chỉ từ khoá, số là integer) và 6 ví dụ few-shot.
+- **v5-local** giữ prompt local, chỉ đổi tools: còn 7 tool lõi, description ngắn kèm một ví dụ gọi hàm, bớt field optional.
 
-| Failure Pattern | Count | Example Case | Fix Tried | Helped? |
+Lỗi đặc thù của model nhỏ (đếm từ run JSON, gpt-4o-mini v6 không mắc lỗi nào):
+
+| Failure Pattern | Count (v6-llama3b / v6-qwen7b) | Example Case | Fix Tried | Helped? |
 |---|---|---|---|---|
-| wrong / hallucinated tool | N/A | — | — | — |
-| invalid JSON args (`_invalid_json_arguments`) | N/A | — | — | — |
-| no tool call / answered directly | N/A | — | — | — |
-| missed `clarify` | N/A | — | — | — |
-| repeated / unnecessary calls | N/A | — | — | — |
+| wrong tool / gọi tool khi phải trả lời text | llama 5 / qwen 0 | R08 (tích phân) → `papers`, R09 → `format(items=[])`, M06 vẫn gọi `social_search` dù user đã bỏ Twitter | v4: rule ngoài phạm vi → không tool; v5: bỏ 7 tool không cần | **Không**. v4 llama vẫn gọi `papers`/`policy`; v5 bớt tool thì llama chuyển sang gọi `format(items=[])` |
+| bịa tên tool không có trong `tools.yaml` | 0 / 0 | — | — | — |
+| invalid JSON args (`_invalid_json_arguments`) | 0 / 0 | — | — | — |
+| số truyền dạng chuỗi (`limit="10"`) | llama 4 / qwen 0 | R05 `timeline(limit="10")` | v4: rule "integer"; v5: description nhấn integer | **Có ở v5** (limit=10), nhưng chính v5 làm routing hỏng |
+| query thừa chữ / thiếu `topic=news` | llama 4 / qwen 0 | R03 `query="AI news today"` | v4: rule + ví dụ query chỉ từ khoá | **Có**: R03, R13, M02 PASS ở v4-local-llama3b |
+| missed `clarify` (đoán hoặc hỏi bằng text) | llama 3 / qwen 3 | qwen R11: hỏi URL bằng text, không gọi tool | v4: "muốn hỏi phải gọi clarify" + few-shot | **Một phần**: qwen R12 sửa được, nhưng xuất hiện **over-clarify** ở R09/R14 |
+| không gọi tool / viết tool call ra text | llama 0 / qwen 2 (v5-local-qwen7b: 3) | v5 R11: text `'fetch(url="https://example.com/post")'` | — (lỗi **do v5 gây ra**) | Ví dụ gọi hàm trong description bị qwen chép thành câu trả lời, bịa luôn URL ví dụ |
+| repeated / unnecessary calls | 0 / 0 | — | — | — |
 
-- Cái gì giúp model nhỏ gọi tool đúng hơn nhất? Bằng chứng?
-- Bản prompt tối ưu cho local chạy trên model cloud thì sao?
-- Khi nào nhóm sẽ chọn model local thay vì cloud cho agent này?
+**Cái gì giúp model nhỏ gọi tool đúng hơn nhất?** Prompt ngắn có **thứ tự quyết định rõ ràng** và few-shot về cách điền args. Bằng chứng: v4-local nâng llama3.2:3b từ 0.30 lên **0.50**, sửa các case args (R03, R13, M02). Ngược lại, **rút gọn tool declaration làm tệ hơn** cho cả hai model (llama 0.50 → 0.40, qwen 0.80 → 0.75): khi bỏ phần "khi nào dùng / không dùng", llama gọi `lookup` cho R01 (lẽ ra `timeline`) và không `fetch` dù có URL (R04). Kết luận: với model nhỏ, description "khi nào dùng / không dùng" quan trọng hơn độ ngắn. Ví dụ dạng `tool(args)` trong description lại nguy hiểm vì model 7B chép nó ra thành text.
 
-Các câu hỏi B7 chưa có kết quả vì nhóm chưa chạy Ollama. Do đó chưa kết luận
-prompt cloud có tương đương prompt local hay chưa; nếu cần chạy offline trong
-tương lai, sẽ ưu tiên model local cho dữ liệu nhạy cảm hoặc khi cần giảm chi phí,
-sau khi đo lại routing và argument accuracy trên cùng dataset.
+**Bản prompt tối ưu cho local chạy trên model cloud thì sao?** gpt-4o-mini với bản local đạt 0.95 (so với 1.0 của bản cloud). Case duy nhất fail là R10: model đoán `elonmusk` thay vì `clarify`, vì bản local thiếu rule "tên người đã biết thì map handle, không biết thì hỏi" của prompt cloud. Chưa tìm được một bản dùng tốt cho cả hai: bản cloud v6 vẫn tốt nhất cho cả qwen2.5:7b (0.85, cao hơn mọi bản local).
+
+**Khi nào nhóm sẽ chọn model local thay vì cloud?** Chỉ chọn `qwen2.5:7b` cho các tác vụ routing đơn giản cần chạy offline hoặc có dữ liệu nhạy cảm, và phải chặn `send` bằng guardrail trong code vì model local không ổn định ở bước `clarify`. `llama3.2:3b` (≤ 0.50) chưa đủ tin cậy cho agent này. Agent production vẫn nên dùng cloud.
+
+Hạn chế: mỗi cấu hình chỉ chạy 1 lần, chưa đo độ dao động. Hướng tiếp theo: giữ nguyên tools v6 (đủ "khi nào dùng") nhưng ghép prompt local và rule map handle của cloud, rồi đo lại trên qwen2.5:7b.
