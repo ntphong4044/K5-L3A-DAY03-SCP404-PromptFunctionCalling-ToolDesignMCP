@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="vi">
+<meta charset="utf-8">
+<title>Research Agent - SCP404</title>
+<style>
+  body { margin: 0; background: #101827; color: #eef4ff; font: 20px/1.45 system-ui, sans-serif; }
+  main { max-width: 1050px; margin: 0 auto; padding: 48px; }
+  h1 { color: #72d6ff; font-size: 52px; margin: 0 0 8px; }
+  h2 { color: #ffd166; margin-bottom: 8px; }
+  .tag { display: inline-block; background: #243653; border-radius: 999px; padding: 6px 14px; margin: 4px; }
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  section { background: #17243a; border: 1px solid #2d4568; border-radius: 16px; padding: 20px; }
+  code { color: #b6f2c2; }
+</style>
+<main>
+  <h1>🔎 Research Agent</h1>
+  <p>Tìm kiếm có định tuyến, đọc nguồn, tổng hợp digest và chỉ gửi Telegram sau khi người dùng xác nhận.</p>
+  <section>
+    <h2>Tool chính</h2>
+    <span class="tag">timeline · tweet của tài khoản</span>
+    <span class="tag">social_search · tweet theo chủ đề</span>
+    <span class="tag">lookup · web/news</span>
+    <span class="tag">fetch · đọc URL</span>
+    <span class="tag">format · digest</span>
+    <span class="tag">clarify · hỏi phần còn thiếu</span>
+  </section>
+  <div class="grid">
+    <section><h2>Tool mở rộng</h2><p><code>wikipedia</code> kiến thức nền · <code>hackernews</code> top stories · <code>github_repo</code> metadata repo · <code>datetime_now</code> giờ hiện tại.</p></section>
+    <section><h2>Guardrail</h2><p>Không đoán URL/tài khoản bị thiếu. Không gọi tool ngoài phạm vi. <code>send</code> chỉ chạy sau xác nhận rõ ràng với <code>confirmed=true</code>.</p></section>
+  </div>
+  <section><h2>Câu hỏi mẫu</h2><p>“Tin AI hôm nay có gì?” · “Alan Turing là ai?” · “Repo psf/requests có bao nhiêu sao?” · “Gửi digest này lên Telegram.”</p></section>
+</main>
+</html>
