@@ -165,6 +165,8 @@ tools:
     description: >-
       Lấy danh sách bài nổi bật hoặc mới nhất trên Hacker News (tin công nghệ/lập trình/startup).
       DÙNG KHI người dùng hỏi "Hacker News đang có gì", "top stories HN", "bài hot trên HN".
+      Với "top", "hot", "nổi bật" LUÔN truyền kind="top"; với "mới nhất"/"new" truyền
+      kind="new". Không bỏ qua kind khi người dùng đã nêu loại bài.
       KHÔNG DÙNG cho tin tức web nói chung (dùng lookup) hay tweet (dùng social_search).
     parameters:
       type: object

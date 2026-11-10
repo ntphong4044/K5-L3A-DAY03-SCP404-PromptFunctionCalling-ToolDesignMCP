@@ -1,0 +1,779 @@
+{
+  "run_id": "v5_B_group_openai_20261110T142404965024",
+  "version": "v5",
+  "artifact_version": "v5+pa483b9698876+te34a8319a8a0",
+  "prompt_hash": "a483b9698876d3f48e7285f0fff239193149b5a560eb284b54eaa20503dabeb8",
+  "tools_hash": "e34a8319a8a06ff0a5b8943cdd3ac7ffbe4c5b397e1d76a1c56c2db3457bd730",
+  "phase": "B",
+  "suite": "group",
+  "provider": "openai",
+  "model": "gpt-4o-mini",
+  "system_prompt": "C:\\Users\\BenBarnes\\Lab_Vin\\day03\\K5-L3A-DAY03-SCP404-ResearchAgentToolEval\\starter_v0\\artifacts\\system_prompt.md",
+  "tools": "C:\\Users\\BenBarnes\\Lab_Vin\\day03\\K5-L3A-DAY03-SCP404-ResearchAgentToolEval\\starter_v0\\artifacts\\tools.yaml",
+  "eval_cases": "data\\eval_group.json",
+  "dataset_id": "day04_v2_research_group",
+  "dataset_role": "group",
+  "description": "Case do NHÓM tự viết thêm để cover thêm trường hợp. Mỗi case cần: id, phase='B', query HOẶC turns, failure_type (thuộc allowed_failure_types), và expect (tool_calls[...] hoặc no_tool=true). Nên kèm metadata.what_it_tests.",
+  "generated_at": "2026-11-10T14:24:04",
+  "summary": {
+    "total_cases": 10,
+    "measured_cases": 10,
+    "provider_error_cases": 0,
+    "passed_cases": 9,
+    "case_accuracy": 0.9,
+    "tool_routing_accuracy": 0.9,
+    "argument_accuracy": 0.9,
+    "multiturn_accuracy": 1.0,
+    "failure_counts": {
+      "wrong_tool": 1
+    },
+    "observed_mismatch_counts": {
+      "extra_tool_call": 1
+    }
+  },
+  "results": [
+    {
+      "id": "G01_wikipedia_background",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "what_it_tests": "Kiến thức nền về một nhân vật -> Wikipedia, không phải lookup tin tức."
+      },
+      "input": "Alan Turing là ai?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "wikipedia",
+            "args": {
+              "title": "Alan Turing"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "wikipedia",
+            "args": {
+              "title": "Alan Turing",
+              "lang": "vi"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "wikipedia",
+          "args": {
+            "title": "Alan Turing",
+            "lang": "vi"
+          },
+          "result": {
+            "tool": "wikipedia",
+            "found": true,
+            "lang": "vi",
+            "title": "Alan Turing",
+            "description": "nhà toán học người Anh (1912–1954)",
+            "summary": "Alan Mathison Turing OBE FRS là một nhà toán học, logic học và mật mã học người Anh, được xem là một trong những nhà tiên phong của ngành khoa học máy tính và A.I. Phép thử Turing là một trong những cống hiến lớn nhất của ông trong ngành trí tuệ nhân tạo: thử thách này đặt ra câu hỏi rằng máy móc có khi nào đạt được ý thức và có thể suy nghĩ được hay không. Ông đã hình thức hóa khái niệm thuật toán và tính toán với máy Turing, đồng thời đưa ra phiên bản của \"Turing\", mà ngày nay được đông đảo công chúng chấp nhận, về luận đề Church-Turing, một luận đề nói rằng tất cả những gì tính được bằng thuật toán đều có thể tính được bằng máy Turing.",
+            "url": "https://vi.wikipedia.org/wiki/Alan_Turing",
+            "source": "vi.wikipedia.org",
+            "is_disambiguation": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "G02_hackernews_top",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "what_it_tests": "Routing Hacker News và trích limit/kind."
+      },
+      "input": "Hacker News đang có 3 bài hot nào?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "hackernews",
+            "args": {
+              "limit": 3,
+              "kind": "top"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "hackernews",
+            "args": {
+              "limit": 3,
+              "kind": "top"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "hackernews",
+          "args": {
+            "limit": 3,
+            "kind": "top"
+          },
+          "result": {
+            "tool": "hackernews",
+            "kind": "top",
+            "items": [
+              {
+                "title": "Foldable Flight: The Best Paper Airplanes",
+                "url": "https://www.foldableflight.com",
+                "hn_url": "https://news.ycombinator.com/item?id=50424581",
+                "source": "news.ycombinator.com",
+                "summary": "957 points, 146 comments, by vismit2000",
+                "points": 957,
+                "num_comments": 146
+              },
+              {
+                "title": "USPS now offers official ZIP Code boundary polygons",
+                "url": "https://postalpro.usps.com/zcb",
+                "hn_url": "https://news.ycombinator.com/item?id=50431058",
+                "source": "news.ycombinator.com",
+                "summary": "592 points, 298 comments, by munro",
+                "points": 592,
+                "num_comments": 298
+              },
+              {
+                "title": "Google Gemini routes personal Drive files and emails to human annotators",
+                "url": "https://github.com/thisisme6598/gemini_files/",
+                "hn_url": "https://news.ycombinator.com/item?id=50429426",
+                "source": "news.ycombinator.com",
+                "summary": "541 points, 120 comments, by gf74918",
+                "points": 541,
+                "num_comments": 120
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "G03_github_repo",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "what_it_tests": "Thông tin metadata của repo cụ thể -> github_repo."
+      },
+      "input": "Repo psf/requests có bao nhiêu sao và dùng ngôn ngữ gì?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "github_repo",
+            "args": {
+              "repo": "psf/requests"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "routing_correct": false,
+        "args_correct": false,
+        "actual_tool_calls": [
+          {
+            "name": "github_repo",
+            "args": {
+              "repo": "psf/requests"
+            }
+          },
+          {
+            "name": "github_repo",
+            "args": {
+              "repo": "psf/requests"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "extra_tool_call",
+        "failure_type": "wrong_tool",
+        "failures": [
+          "extra tool call github_repo"
+        ]
+      },
+      "tool_results": [
+        {
+          "tool": "github_repo",
+          "args": {
+            "repo": "psf/requests"
+          },
+          "result": {
+            "tool": "github_repo",
+            "found": true,
+            "repo": "psf/requests",
+            "description": "A simple, yet elegant, HTTP library.",
+            "stars": 54748,
+            "forks": 10759,
+            "open_issues": 251,
+            "language": "Python",
+            "license": "Apache-2.0",
+            "topics": [
+              "client",
+              "cookies",
+              "forhumans",
+              "http",
+              "humans",
+              "python",
+              "python-requests",
+              "requests"
+            ],
+            "archived": false,
+            "last_push": "2026-11-02T16:55:12Z",
+            "url": "https://github.com/psf/requests",
+            "source": "github.com"
+          }
+        },
+        {
+          "tool": "github_repo",
+          "args": {
+            "repo": "psf/requests"
+          },
+          "result": {
+            "tool": "github_repo",
+            "found": true,
+            "repo": "psf/requests",
+            "description": "A simple, yet elegant, HTTP library.",
+            "stars": 54748,
+            "forks": 10759,
+            "open_issues": 251,
+            "language": "Python",
+            "license": "Apache-2.0",
+            "topics": [
+              "client",
+              "cookies",
+              "forhumans",
+              "http",
+              "humans",
+              "python",
+              "python-requests",
+              "requests"
+            ],
+            "archived": false,
+            "last_push": "2026-11-02T16:55:12Z",
+            "url": "https://github.com/psf/requests",
+            "source": "github.com"
+          }
+        }
+      ]
+    },
+    {
+      "id": "G04_current_time",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "what_it_tests": "Câu hỏi thời gian hiện tại -> datetime_now, không tìm web."
+      },
+      "input": "Bây giờ ở Tokyo là mấy giờ?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "datetime_now",
+            "args": {
+              "timezone_name": "Asia/Tokyo"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "datetime_now",
+            "args": {
+              "timezone_name": "Asia/Tokyo"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "datetime_now",
+          "args": {
+            "timezone_name": "Asia/Tokyo"
+          },
+          "result": {
+            "tool": "datetime_now",
+            "timezone": "Asia/Tokyo",
+            "iso": "2026-11-10T16:23:52+09:00",
+            "date": "2026-11-10",
+            "time": "16:23:52",
+            "weekday": "Tuesday",
+            "utc_offset": "+0900"
+          }
+        }
+      ]
+    },
+    {
+      "id": "G05_unknown_repo_owner",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "what_it_tests": "Thiếu owner GitHub -> hỏi lại, không đoán."
+      },
+      "input": "Cho tôi thông tin repo requests.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "text"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "question": "Bạn có thể cho biết tên người sở hữu repo này không?",
+              "response_type": "text"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "missing_info",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "clarify",
+          "args": {
+            "question": "Bạn có thể cho biết tên người sở hữu repo này không?",
+            "response_type": "text"
+          },
+          "result": {
+            "tool": "ask_user",
+            "question": "Bạn có thể cho biết tên người sở hữu repo này không?",
+            "response_type": "text",
+            "options": [],
+            "awaiting_user": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "G06_switch_to_wikipedia",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "what_it_tests": "Multi-turn: intent mới thay thế intent tin tức."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tìm tin mới về Ada Lovelace."
+        },
+        {
+          "role": "assistant",
+          "content": "Bạn muốn tìm trên web hay đọc kiến thức nền?"
+        },
+        {
+          "role": "user",
+          "content": "Bỏ tin mới, cho tôi biết Ada Lovelace là ai."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "wikipedia",
+            "args": {
+              "title": "Ada Lovelace"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "wikipedia",
+            "args": {
+              "title": "Ada Lovelace",
+              "lang": "en"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "wikipedia",
+          "args": {
+            "title": "Ada Lovelace",
+            "lang": "en"
+          },
+          "result": {
+            "tool": "wikipedia",
+            "found": true,
+            "lang": "en",
+            "title": "Ada Lovelace",
+            "description": "English mathematician (1815–1852)",
+            "summary": "Augusta Ada King, Countess of Lovelace, also known as Ada Lovelace, was an English mathematician and writer chiefly known for work on Charles Babbage's proposed mechanical general-purpose computer, the analytical engine. She was the first to recognise the machine had applications beyond pure calculation. Lovelace is often considered the first computer programmer.",
+            "url": "https://en.wikipedia.org/wiki/Ada_Lovelace",
+            "source": "en.wikipedia.org",
+            "is_disambiguation": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "G07_switch_to_github",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "what_it_tests": "Multi-turn: bỏ lookup và route sang repo cụ thể."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tìm tin về langchain."
+        },
+        {
+          "role": "assistant",
+          "content": "Đã hiểu."
+        },
+        {
+          "role": "user",
+          "content": "Thôi, xem metadata repo langchain-ai/langchain."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "github_repo",
+            "args": {
+              "repo": "langchain-ai/langchain"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "github_repo",
+            "args": {
+              "repo": "langchain-ai/langchain"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "github_repo",
+          "args": {
+            "repo": "langchain-ai/langchain"
+          },
+          "result": {
+            "tool": "github_repo",
+            "found": true,
+            "repo": "langchain-ai/langchain",
+            "description": "The agent engineering platform.",
+            "stars": 149289,
+            "forks": 25101,
+            "open_issues": 737,
+            "language": "Python",
+            "license": "MIT",
+            "topics": [
+              "agents",
+              "ai",
+              "ai-agents",
+              "anthropic",
+              "chatgpt",
+              "deepagents",
+              "enterprise",
+              "framework",
+              "gemini",
+              "generative-ai",
+              "langchain",
+              "langgraph",
+              "llm",
+              "multiagent",
+              "open-source",
+              "openai",
+              "pydantic",
+              "python",
+              "rag",
+              "typescript"
+            ],
+            "archived": false,
+            "last_push": "2026-11-10T04:12:11Z",
+            "url": "https://github.com/langchain-ai/langchain",
+            "source": "github.com"
+          }
+        }
+      ]
+    },
+    {
+      "id": "G08_confirm_send",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "what_it_tests": "Sau xác nhận rõ ràng mới gọi send với confirmed=true."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Gửi digest này lên Telegram."
+        },
+        {
+          "role": "assistant",
+          "content": "Bạn có chắc muốn gửi không?"
+        },
+        {
+          "role": "user",
+          "content": "Có, gửi đi."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "send",
+            "args": {
+              "confirmed": true
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "send",
+            "args": {
+              "text": "digest này",
+              "confirmed": true
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "send",
+          "args": {
+            "text": "digest này",
+            "confirmed": true
+          },
+          "result": {
+            "tool": "send_telegram",
+            "error": "RuntimeError",
+            "message": "Missing TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID env var"
+          }
+        }
+      ]
+    },
+    {
+      "id": "G09_cancel_send",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "what_it_tests": "Từ chối xác nhận phải dừng hành động side effect."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Gửi bản tin AI lên Telegram."
+        },
+        {
+          "role": "assistant",
+          "content": "Bạn có chắc muốn gửi không?"
+        },
+        {
+          "role": "user",
+          "content": "Không, đừng gửi."
+        }
+      ],
+      "expect": {
+        "no_tool": true,
+        "behavior": "do_not_send"
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [],
+        "actual_text": "Đã hiểu, tôi sẽ không gửi bản tin AI lên Telegram. Nếu bạn cần gì khác, hãy cho tôi biết!",
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    },
+    {
+      "id": "G10_multi_source_digest",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "what_it_tests": "Multi-turn: format chỉ chạy sau khi đã có item từ các nguồn."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tìm tin AI hôm nay và tweet mới nhất về GPT-5."
+        },
+        {
+          "role": "assistant",
+          "content": "Đã tìm được hai nguồn. TOOL_RESULTS_JSON: [{\"title\":\"AI news\",\"url\":\"https://example.com/ai\",\"source\":\"web\",\"summary\":\"AI update\",\"section\":\"News\"},{\"title\":\"GPT-5 discussion\",\"url\":\"https://x.com/example/status/1\",\"source\":\"X\",\"summary\":\"GPT-5 update\",\"section\":\"Tweets\"}]"
+        },
+        {
+          "role": "user",
+          "content": "Sau đó gom các kết quả thành digest theo mục."
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "format",
+            "args": {
+              "template": "sections"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "format",
+            "args": {
+              "items": [
+                {
+                  "title": "AI news",
+                  "url": "https://example.com/ai",
+                  "source": "web",
+                  "summary": "AI update",
+                  "section": "News"
+                },
+                {
+                  "title": "GPT-5 discussion",
+                  "url": "https://x.com/example/status/1",
+                  "source": "X",
+                  "summary": "GPT-5 update",
+                  "section": "Tweets"
+                }
+              ],
+              "template": "sections",
+              "headline": "Tổng hợp tin tức AI và tweet về GPT-5"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "format",
+          "args": {
+            "items": [
+              {
+                "title": "AI news",
+                "url": "https://example.com/ai",
+                "source": "web",
+                "summary": "AI update",
+                "section": "News"
+              },
+              {
+                "title": "GPT-5 discussion",
+                "url": "https://x.com/example/status/1",
+                "source": "X",
+                "summary": "GPT-5 update",
+                "section": "Tweets"
+              }
+            ],
+            "template": "sections",
+            "headline": "Tổng hợp tin tức AI và tweet về GPT-5"
+          },
+          "result": {
+            "tool": "render_digest",
+            "template": "sections",
+            "markdown": "# Tổng hợp tin tức AI và tweet về GPT-5\n\n## News\n- AI update - [web](https://example.com/ai)\n\n## Tweets\n- GPT-5 update - [X](https://x.com/example/status/1)\n",
+            "item_count": 2
+          }
+        }
+      ]
+    }
+  ]
+}
