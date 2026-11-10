@@ -15,6 +15,17 @@ def err(tool: str, exc: Exception) -> dict[str, Any]:
     return {"tool": tool, "error": type(exc).__name__, "message": str(exc)}
 
 
+def clamp_int(value: Any, default: int, lo: int = 1, hi: int = 20) -> int:
+    """Normalise a model-supplied count: None / non-numeric / below `lo` -> `default`, above `hi` -> `hi`."""
+    try:
+        number = int(value)
+    except (TypeError, ValueError):
+        return default
+    if number < lo:
+        return default
+    return min(number, hi)
+
+
 def domain(url: str) -> str:
     try:
         return urlparse(url).netloc.replace("www.", "")

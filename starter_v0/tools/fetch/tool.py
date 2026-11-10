@@ -10,6 +10,9 @@ from tools._shared import TIMEOUT, domain, err
 
 def read_url(url: str = "") -> dict[str, Any]:
     try:
+        url = str(url or "").strip()
+        if not url.lower().startswith(("http://", "https://")):
+            raise ValueError("url must start with http:// or https://")
         key = os.getenv("FIRECRAWL_API_KEY")
         if not key:
             raise RuntimeError("Missing FIRECRAWL_API_KEY env var")

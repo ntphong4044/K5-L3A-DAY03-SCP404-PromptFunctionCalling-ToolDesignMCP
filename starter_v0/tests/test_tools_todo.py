@@ -233,21 +233,3 @@ def test_policy_instruction_like_lines_go_to_untrusted_text() -> None:
     assert any("ignore" in line.lower() for line in hit["untrusted_text"])
     assert "ignore" not in hit["facts"].lower()
     assert "untrusted" in result["trust_boundary"].lower()
-
-
-# ---------------- YOUR NEW TOOL(S) ----------------
-# Write at least 3 tests per tool your team adds:
-#   1. happy path (mocked if it calls an API)
-#   2. bad / missing input from the model (empty string, wrong type, out-of-enum value)
-#   3. failure path (missing key, HTTP error, timeout) -> returns error dict, does not raise
-
-def test_my_new_tool_happy_path() -> None:
-    pytest.skip(TODO)
-
-
-def test_my_new_tool_bad_input_from_model() -> None:
-    pytest.skip(TODO)
-
-
-def test_my_new_tool_failure_returns_error_dict() -> None:
-    pytest.skip(TODO)
