@@ -16,33 +16,57 @@
 
 ## A1. Agent này làm được gì
 
-> 1–2 câu mô tả agent dùng để làm gì (cho team khác hiểu nhanh).
+**Research agent** nhận yêu cầu bằng tiếng Việt hoặc tiếng Anh, tự chọn đúng tool trong 14 tool, rồi trả về kết quả có nguồn: tweet theo tài khoản hoặc chủ đề, tin tức web, nội dung một URL, paper arXiv, chính sách nội bộ, kiến thức Wikipedia, bài hot trên Hacker News, thông tin repo GitHub và giờ hiện tại. Agent có thể gộp kết quả thành bản tin (digest) và gửi lên Telegram, nhưng chỉ sau khi người dùng xác nhận.
 
-Ví dụ: "Research agent: tìm tin theo từ khóa / theo tài khoản, đọc URL, tổng hợp thành digest, và gửi lên Telegram khi được xác nhận."
+**Điểm khác biệt (đã đo bằng eval thật, không phải cảm giác):**
+- **Biết hỏi lại thay vì đoán.** Thiếu tài khoản hoặc URL thì agent dùng `clarify`, không bịa. Người dùng đã nói tên (ví dụ "Sam Altman") thì agent tự đổi sang handle `sama` và không hỏi lại.
+- **Không tự ý gửi.** Muốn gửi Telegram, agent hỏi xác nhận (có/không) trước; `send` chỉ chạy khi `confirmed=true`.
+- **Biết từ chối.** Yêu cầu ngoài phạm vi (giải toán, viết code) thì không gọi tool nào.
+- **Hiểu hội thoại nhiều lượt.** Nếu người dùng đổi ý ("bỏ Twitter, chuyển sang web"), agent bỏ phần đã huỷ.
+- **Tool được kiểm thử.** Tool chạy offline qua `pytest`, có kiểm tra input biên (rỗng, âm, sai kiểu) để không tốn API khi model gửi sai args.
+
+**Kết quả trên base eval (20 case, `gpt-4o-mini`):** từ 65% (v0) lên **100% (v3, v4)** sau 3 vòng tối ưu prompt và tool declaration.
 
 **Link dùng thử (deploy):**
 
-> Dán link public để team khác mở thử ngay. Cách deploy nhanh bằng Cloudflare Tunnel xem README. Nếu deploy Vercel/Streamlit Cloud thì dán link đó.
->
 > URL: 
 
 ## A2. Tool agent có
 
-> Liệt kê các tool agent đang dùng (gồm tool mới nhóm tự thêm). Mỗi tool 1 dòng: tên + làm được gì.
-
 | Tên tool | Làm được gì | Tool mới nhóm thêm? |
 |---|---|---|
-| clarify | hỏi lại người dùng khi thiếu thông tin | không |
-|  |  |  |
-|  |  |  |
+| clarify | Hỏi lại người dùng khi thiếu thông tin, hoặc xin xác nhận (có/không) trước khi gửi | không |
+| timeline | Lấy các bài đăng gần đây của **một tài khoản** X/Twitter | không |
+| social_search | Tìm bài đăng X/Twitter **theo chủ đề/từ khoá** (mới nhất hoặc nổi bật) | không |
+| lookup | Tìm kiếm web và tin tức, lọc theo khoảng thời gian (ngày/tuần/tháng/năm) | không |
+| fetch | Đọc và lấy nội dung đầy đủ của **một URL** | không |
+| format | Gộp các kết quả đã có thành bản tin markdown (brief, sections, bullets, thread…) | không |
+| send | Gửi nội dung lên kênh Telegram, **chỉ sau khi người dùng xác nhận** | không |
+| policy | Tra cứu chính sách nội bộ của công ty (quyền riêng tư, trích dẫn nguồn, đăng bài…) | không |
+| papers | Tìm bài báo khoa học trên arXiv | không |
+| paper_text | Tải PDF một paper arXiv và trích text để đọc/tóm tắt | không |
+| **wikipedia** | Tóm tắt một bài Wikipedia (tiếng Anh hoặc tiếng Việt) | **có** |
+| **hackernews** | Lấy bài top hoặc mới nhất trên Hacker News | **có** |
+| **github_repo** | Thông tin một repo GitHub: sao, fork, issue, ngôn ngữ, license | **có** |
+| **datetime_now** | Cho biết ngày giờ hiện tại ở một múi giờ | **có** |
+
+Bốn tool mới đều dùng API miễn phí, không cần key.
 
 ## A3. Câu hỏi mẫu để thử
 
-> 3–5 câu hỏi/yêu cầu mẫu để team khác tự thử agent ngay.
+| # | Câu thử | Agent nên làm gì |
+|---|---|---|
+| 1 | "Giới thiệu về Alan Turing" | Gọi `wikipedia` |
+| 2 | "Bây giờ là mấy giờ ở Tokyo?" | Gọi `datetime_now` với múi giờ Asia/Tokyo |
+| 3 | "Repo psf/requests có bao nhiêu sao?" | Gọi `github_repo` |
+| 4 | "Top 3 bài trên Hacker News hôm nay" | Gọi `hackernews` với `limit=3` |
+| 5 | "Tóm tắt 5 tweet mới nhất" _(không nói của ai)_ | **Hỏi lại** bằng `clarify`, không tự đoán tài khoản |
+| 6 | "Tweet mới nhất của Sam Altman" | Gọi `timeline` với handle `sama`, không hỏi lại |
+| 7 | "Tin tức AI hôm nay và mọi người trên Twitter đang bàn gì về AI?" | Gọi `lookup` (news) và `social_search` cùng lúc |
+| 8 | "Gửi bản tin này lên Telegram" | **Xin xác nhận** trước, chưa gửi ngay |
+| 9 | "Giải giúp mình nguyên hàm của x^2" | **Từ chối**, không gọi tool (ngoài phạm vi) |
 
-1.
-2.
-3.
+Mẹo thử khó: hỏi "Repo langchain có bao nhiêu sao?" (thiếu owner, agent nên hỏi lại), hoặc đổi ý giữa chừng ("Bỏ Twitter, chỉ tìm trên web thôi").
 
 ---
 
