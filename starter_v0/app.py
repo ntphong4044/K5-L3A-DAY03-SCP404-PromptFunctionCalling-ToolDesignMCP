@@ -19,7 +19,7 @@ load_lab_env(ROOT)
 TRANSCRIPTS_DIR = ROOT / "transcripts"
 SYSTEM_PROMPT_PATH = ARTIFACTS_DIR / "system_prompt.md"
 TOOLS_PATH = ARTIFACTS_DIR / "tools.yaml"
-AGENT_VERSION = "v6"
+AGENT_VERSION = "v8"
 
 
 @st.cache_resource

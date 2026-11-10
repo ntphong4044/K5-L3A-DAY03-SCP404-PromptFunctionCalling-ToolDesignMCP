@@ -118,7 +118,7 @@ tools:
       type: object
       properties:
         query: {type: string, default: "", description: "Từ khoá câu hỏi về chính sách."}
-        policy_area: {type: string, enum: [all, ai_research, source_citation, data_privacy, external_publishing, tool_usage], default: "all", description: "Nhóm chính sách nếu xác định được; không chắc thì 'all'."}
+        policy_area: {type: string, enum: [all, ai_research, source_citation, data_privacy, external_publishing, tool_usage], default: "all", description: "Chọn theo chủ đề câu hỏi: nguồn tin, trích dẫn, fact, tweet viral, độ tin cậy nguồn → source_citation; API key, dữ liệu khách hàng, thông tin cá nhân → data_privacy; đăng/gửi ra ngoài, Telegram, publish → external_publishing; quy trình nghiên cứu AI, paper → ai_research; cách dùng tool → tool_usage. Chỉ dùng 'all' khi câu hỏi không thuộc nhóm nào ở trên."}
         top_k: {type: integer, default: 3, description: "Số đoạn trả về, mặc định 3."}
       required: [query]
 

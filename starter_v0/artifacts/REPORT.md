@@ -25,7 +25,7 @@
 - **Hiểu hội thoại nhiều lượt.** Nếu người dùng đổi ý ("bỏ Twitter, chuyển sang web"), agent bỏ phần đã huỷ.
 - **Tool được kiểm thử.** Tool chạy offline qua `pytest`, có kiểm tra input biên (rỗng, âm, sai kiểu) để không tốn API khi model gửi sai args.
 
-**Kết quả trên base eval (20 case, `gpt-4o-mini`):** từ 65% (v0) lên **100% (v3, v4)** sau 3 vòng tối ưu prompt và tool declaration.
+**Kết quả trên base eval (20 case, `gpt-4o-mini`):** từ 65% (v0) lên **100% (v3, v4)** sau 3 vòng tối ưu prompt và tool declaration. Bản cuối **v8** đạt 100% trên cả 3 bộ eval: base 20/20, group 10/10, extension (policy/arXiv) 10/10.
 
 **Link dùng thử (deploy):**
 
@@ -80,7 +80,7 @@ Mẹo thử khó: hỏi "Repo langchain có bao nhiêu sao?" (thiếu owner, age
 
 Các số liệu dưới đây được lấy từ `artifacts/version_log.csv` và `runs/*.json`.
 
-v0–v4 và v6-base chạy trên `data/eval_base.json` (20 case: 14 single turn, 6 multi turn); v5, v6 chạy trên `data/eval_group.json` (10 case của nhóm, Metric Before của v5 là group eval v3 = 0.80). Mỗi version chỉ đổi **một** artifact để kiểm chứng **một** giả thuyết; hash trong cột Artifact Version cho thấy file nào đổi.
+v6-ext, v7, v8 chạy trên `data/eval_research_extension.json` (10 case policy/arXiv); v0–v4, v6-base và v8 (regression) chạy trên `data/eval_base.json` (20 case: 14 single turn, 6 multi turn); v5, v6 chạy trên `data/eval_group.json` (10 case của nhóm, Metric Before của v5 là group eval v3 = 0.80). Mỗi version chỉ đổi **một** artifact để kiểm chứng **một** giả thuyết; hash trong cột Artifact Version cho thấy file nào đổi.
 
 | Version | Changed Artifact | Artifact Version | Hypothesis | Metric Before | Metric After | Run File |
 |---|---|---|---|---:|---:|---|
@@ -92,13 +92,18 @@ v0–v4 và v6-base chạy trên `data/eval_base.json` (20 case: 14 single turn,
 | v5 | `system_prompt.md`, `tools.yaml`, `eval_group.json` | `v5+pa483b9698876+te34a8319a8a0` | G02 cần truyền rõ `kind=top`; G10 cần source items trong context trước khi gọi `format` | 0.80 | case **0.90** · routing 0.90 · args 0.90 · multi 1.0 | `runs/v5_B_group_openai_20261110T142404965024.json` |
 | v6 | `system_prompt.md` | `v6+pc48c9591a114+te34a8319a8a0` | Không lặp lại cùng tool với cùng args trong một request, sửa duplicate `github_repo` ở G03 | 0.90 | case **1.0** · routing 1.0 · args 1.0 · multi 1.0 | `runs/v6_B_group_openai_20261110T142456849983.json` |
 | v6-base | không đổi (chạy lại v6 trên base) | `v6+pc48c9591a114+te34a8319a8a0` | v5/v6 chỉ được đo trên group eval; prompt/tools cuối không được làm hỏng 20 case base | 1.0 (v4 base) | case **1.0** · routing 1.0 · args 1.0 · multi 1.0 | `runs/v6_B_base_openai_20261110T164928793989.json` |
+| v6-ext | không đổi (eval extension lần đầu) | `v6+pc48c9591a114+te34a8319a8a0` | Đo `data/eval_research_extension.json` (10 case policy/arXiv) | — | case **0.8** · routing 0.9 · args 0.8 | `runs/v6_B_extension_openai_20261110T182403975220.json` |
+| v7 | `tools.yaml` (`policy.policy_area`) | `v7+pc48c9591a114+tcb1f1a5d3702` | E01 chọn `policy_area="all"` vì mô tả cũ ghi "không chắc thì all". Thêm bảng map chủ đề → area (fact/tweet/nguồn → `source_citation`…) | 0.8 | case **0.9** · routing 0.9 · args 0.9 | `runs/v7_B_extension_openai_20261110T182449368673.json` |
+| v8 | `system_prompt.md` | `v8+pb4c1df0ac466+tcb1f1a5d3702` | E06 "làm bản tin AI, nhưng kiểm tra policy **trước**" chỉ gọi `policy`. Rule: "trước/first" không có nghĩa bỏ phần còn lại, gọi `policy` + `lookup` cùng bước | 0.9 | case **1.0** · routing 1.0 · args 1.0 | `runs/v8_B_extension_openai_20261110T182523814096.json` |
+| v8 (regression) | không đổi | `v8+pb4c1df0ac466+tcb1f1a5d3702` | Bản cuối không được làm hỏng base/group | base 1.0, group 1.0 | base **1.0** · group **1.0** | `runs/v8_B_base_openai_20261110T182623939924.json`, `runs/v8_B_group_openai_20261110T182641820312.json` |
 
 Nhận xét:
 
 - Bước nhảy lớn nhất (0.65 → 0.95) đến từ việc **bỏ chỉ dẫn xấu trong prompt**, không phải từ việc mô tả tool.
 - v2 là một ví dụ regression thật: làm `clarify` "mạnh" hơn thì sửa được R11 nhưng model trở nên quá thận trọng (hỏi lại cả khi đã có tên người). Bài học: mỗi rule "hãy làm X" cần đi kèm ranh giới "khi nào KHÔNG làm X".
 - v4 xác nhận thêm tool không làm hỏng routing cũ khi mỗi tool có mục "KHÔNG DÙNG khi…" chỉ sang tool đúng.
-- Bản cuối (v6) đạt 1.0 trên **cả** base (20/20) và group (10/10), nên các sửa đổi cho group eval không gây regression trên base.
+- v6 đạt 1.0 trên **cả** base (20/20) và group (10/10), nên các sửa đổi cho group eval không gây regression trên base.
+- **Bản cuối v8** đạt 1.0 trên cả 3 bộ eval: base 20/20, group 10/10, extension 10/10. Extension cho thấy lỗi mới mà base/group không bắt được: enum `policy_area` có giá trị "an toàn" (`all`) khiến model né chọn cụ thể, và chữ "trước" trong câu bị hiểu là làm tuần tự.
 
 ## B2. Failure Analysis
 
