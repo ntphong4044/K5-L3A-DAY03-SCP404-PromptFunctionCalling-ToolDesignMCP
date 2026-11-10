@@ -3,5 +3,116 @@
   "dataset_role": "group",
   "description": "Case do NHÓM tự viết thêm để cover thêm trường hợp. Mỗi case cần: id, phase='B', query HOẶC turns, failure_type (thuộc allowed_failure_types), và expect (tool_calls[...] hoặc no_tool=true). Nên kèm metadata.what_it_tests.",
   "allowed_failure_types": ["wrong_tool", "wrong_arg_value", "wrong_boundary", "unnecessary_tool", "out_of_scope", "missing_info"],
-  "cases": []
+  "cases": [
+    {
+      "id": "G01_wikipedia_background",
+      "phase": "B",
+      "suite": "group",
+      "query": "Alan Turing là ai?",
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "wikipedia", "args": {"title": "Alan Turing"}}]},
+      "metadata": {"what_it_tests": "Kiến thức nền về một nhân vật -> Wikipedia, không phải lookup tin tức."}
+    },
+    {
+      "id": "G02_hackernews_top",
+      "phase": "B",
+      "suite": "group",
+      "query": "Hacker News đang có 3 bài hot nào?",
+      "failure_type": "wrong_arg_value",
+      "expect": {"tool_calls": [{"name": "hackernews", "args": {"limit": 3, "kind": "top"}}]},
+      "metadata": {"what_it_tests": "Routing Hacker News và trích limit/kind."}
+    },
+    {
+      "id": "G03_github_repo",
+      "phase": "B",
+      "suite": "group",
+      "query": "Repo psf/requests có bao nhiêu sao và dùng ngôn ngữ gì?",
+      "failure_type": "unnecessary_tool",
+      "expect": {"tool_calls": [{"name": "github_repo", "args": {"repo": "psf/requests"}}]},
+      "metadata": {"what_it_tests": "Thông tin metadata của repo cụ thể -> github_repo."}
+    },
+    {
+      "id": "G04_current_time",
+      "phase": "B",
+      "suite": "group",
+      "query": "Bây giờ ở Tokyo là mấy giờ?",
+      "failure_type": "wrong_arg_value",
+      "expect": {"tool_calls": [{"name": "datetime_now", "args": {"timezone_name": "Asia/Tokyo"}}]},
+      "metadata": {"what_it_tests": "Câu hỏi thời gian hiện tại -> datetime_now, không tìm web."}
+    },
+    {
+      "id": "G05_unknown_repo_owner",
+      "phase": "B",
+      "suite": "group",
+      "query": "Cho tôi thông tin repo requests.",
+      "failure_type": "missing_info",
+      "expect": {"tool_calls": [{"name": "clarify", "args": {"response_type": "text"}}]},
+      "metadata": {"what_it_tests": "Thiếu owner GitHub -> hỏi lại, không đoán."}
+    },
+    {
+      "id": "G06_switch_to_wikipedia",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Tìm tin mới về Ada Lovelace."},
+        {"role": "assistant", "content": "Bạn muốn tìm trên web hay đọc kiến thức nền?"},
+        {"role": "user", "content": "Bỏ tin mới, cho tôi biết Ada Lovelace là ai."}
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "wikipedia", "args": {"title": "Ada Lovelace"}}]},
+      "metadata": {"what_it_tests": "Multi-turn: intent mới thay thế intent tin tức."}
+    },
+    {
+      "id": "G07_switch_to_github",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Tìm tin về langchain."},
+        {"role": "assistant", "content": "Đã hiểu."},
+        {"role": "user", "content": "Thôi, xem metadata repo langchain-ai/langchain."}
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "github_repo", "args": {"repo": "langchain-ai/langchain"}}]},
+      "metadata": {"what_it_tests": "Multi-turn: bỏ lookup và route sang repo cụ thể."}
+    },
+    {
+      "id": "G08_confirm_send",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Gửi digest này lên Telegram."},
+        {"role": "assistant", "content": "Bạn có chắc muốn gửi không?"},
+        {"role": "user", "content": "Có, gửi đi."}
+      ],
+      "failure_type": "wrong_boundary",
+      "expect": {"tool_calls": [{"name": "send", "args": {"confirmed": true}}]},
+      "metadata": {"what_it_tests": "Sau xác nhận rõ ràng mới gọi send với confirmed=true."}
+    },
+    {
+      "id": "G09_cancel_send",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Gửi bản tin AI lên Telegram."},
+        {"role": "assistant", "content": "Bạn có chắc muốn gửi không?"},
+        {"role": "user", "content": "Không, đừng gửi."}
+      ],
+      "failure_type": "wrong_boundary",
+      "expect": {"no_tool": true, "behavior": "do_not_send"},
+      "metadata": {"what_it_tests": "Từ chối xác nhận phải dừng hành động side effect."}
+    },
+    {
+      "id": "G10_multi_source_digest",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Tìm tin AI hôm nay và tweet mới nhất về GPT-5."},
+        {"role": "assistant", "content": "Đã tìm được hai nguồn. TOOL_RESULTS_JSON: [{\"title\":\"AI news\",\"url\":\"https://example.com/ai\",\"source\":\"web\",\"summary\":\"AI update\",\"section\":\"News\"},{\"title\":\"GPT-5 discussion\",\"url\":\"https://x.com/example/status/1\",\"source\":\"X\",\"summary\":\"GPT-5 update\",\"section\":\"Tweets\"}]"},
+        {"role": "user", "content": "Sau đó gom các kết quả thành digest theo mục."}
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "format", "args": {"template": "sections"}}]},
+      "metadata": {"what_it_tests": "Multi-turn: format chỉ chạy sau khi đã có item từ các nguồn."}
+    }
+  ]
 }
