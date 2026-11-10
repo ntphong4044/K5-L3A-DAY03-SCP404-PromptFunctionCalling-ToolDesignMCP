@@ -1,0 +1,371 @@
+{
+  "transcript_id": "v6_openai_20261110T150755414747",
+  "version": "v6",
+  "artifact_version": "v6+pc48c9591a114+te34a8319a8a0",
+  "prompt_hash": "c48c9591a114cea0cfd322f01dcb0c8e3abd9fb9ed13a17c3832764e59d2bd7e",
+  "tools_hash": "e34a8319a8a06ff0a5b8943cdd3ac7ffbe4c5b397e1d76a1c56c2db3457bd730",
+  "provider": "openai",
+  "model": null,
+  "system_prompt": "C:\\Users\\BenBarnes\\Lab_Vin\\day03\\K5-L3A-DAY03-SCP404-ResearchAgentToolEval\\starter_v0\\artifacts\\system_prompt.md",
+  "tools": "C:\\Users\\BenBarnes\\Lab_Vin\\day03\\K5-L3A-DAY03-SCP404-ResearchAgentToolEval\\starter_v0\\artifacts\\tools.yaml",
+  "history_window": 5,
+  "max_tool_rounds": 4,
+  "created_at": "2026-11-10T15:07:55",
+  "updated_at": "2026-11-10T15:33:47",
+  "turns": [
+    {
+      "turn_index": 1,
+      "started_at": "2026-11-10T15:08:16",
+      "user": "nhà hàng xóm đang cháy tôi phải làm gì",
+      "status": "answered",
+      "assistant_text": "Nếu nhà hàng xóm của bạn đang cháy, hãy thực hiện các bước sau:\n\n1. **Gọi cấp cứu**: Ngay lập tức gọi số điện thoại khẩn cấp (như 112 hoặc 911 tùy theo quốc gia) để báo cáo vụ cháy.\n\n2. **Di chuyển đến nơi an toàn**: Nếu bạn ở gần khu vực cháy, hãy rời khỏi nhà và di chuyển đến nơi an toàn, tránh xa khói và lửa.\n\n3. **Cảnh báo hàng xóm**: Nếu có thể, hãy cảnh báo những người xung quanh về vụ cháy để họ cũng có thể di chuyển đến nơi an toàn.\n\n4. **Không cố gắng dập lửa**: Nếu bạn không phải là lính cứu hỏa, đừng cố gắng dập lửa. Hãy để các chuyên gia xử lý tình huống này.\n\n5. **Chờ sự giúp đỡ**: Khi đã ở nơi an toàn, hãy chờ đợi sự giúp đỡ từ các dịch vụ cứu hỏa và cứu hộ.\n\nHãy nhớ rằng sự an toàn của bạn và những người xung quanh là quan trọng nhất.",
+      "rounds": [
+        {
+          "round": 1,
+          "assistant_text": "Nếu nhà hàng xóm của bạn đang cháy, hãy thực hiện các bước sau:\n\n1. **Gọi cấp cứu**: Ngay lập tức gọi số điện thoại khẩn cấp (như 112 hoặc 911 tùy theo quốc gia) để báo cáo vụ cháy.\n\n2. **Di chuyển đến nơi an toàn**: Nếu bạn ở gần khu vực cháy, hãy rời khỏi nhà và di chuyển đến nơi an toàn, tránh xa khói và lửa.\n\n3. **Cảnh báo hàng xóm**: Nếu có thể, hãy cảnh báo những người xung quanh về vụ cháy để họ cũng có thể di chuyển đến nơi an toàn.\n\n4. **Không cố gắng dập lửa**: Nếu bạn không phải là lính cứu hỏa, đừng cố gắng dập lửa. Hãy để các chuyên gia xử lý tình huống này.\n\n5. **Chờ sự giúp đỡ**: Khi đã ở nơi an toàn, hãy chờ đợi sự giúp đỡ từ các dịch vụ cứu hỏa và cứu hộ.\n\nHãy nhớ rằng sự an toàn của bạn và những người xung quanh là quan trọng nhất.",
+          "tool_calls": [],
+          "tool_results": []
+        }
+      ],
+      "tool_events": [],
+      "ended_at": "2026-11-10T15:08:16"
+    },
+    {
+      "turn_index": 2,
+      "started_at": "2026-11-10T15:08:40",
+      "user": "nhưng tôi đang ăn dỡ hambeger k gọi được",
+      "status": "answered",
+      "assistant_text": "Nếu bạn không thể gọi cấp cứu ngay lập tức vì đang ăn, hãy làm theo các bước sau:\n\n1. **Đặt thức ăn xuống**: Ngừng ăn ngay lập tức và tập trung vào tình huống khẩn cấp.\n\n2. **Gọi cấp cứu**: Nếu bạn có thể, hãy gọi số điện thoại khẩn cấp ngay lập tức để báo cáo vụ cháy.\n\n3. **Di chuyển đến nơi an toàn**: Nếu có khói hoặc lửa gần bạn, hãy rời khỏi khu vực đó ngay lập tức và tìm nơi an toàn.\n\n4. **Cảnh báo hàng xóm**: Nếu bạn có thể, hãy cảnh báo những người xung quanh về vụ cháy.\n\n5. **Chờ sự giúp đỡ**: Khi đã ở nơi an toàn, hãy chờ đợi sự giúp đỡ từ các dịch vụ cứu hỏa.\n\nAn toàn của bạn và những người xung quanh là ưu tiên hàng đầu.",
+      "rounds": [
+        {
+          "round": 1,
+          "assistant_text": "Nếu bạn không thể gọi cấp cứu ngay lập tức vì đang ăn, hãy làm theo các bước sau:\n\n1. **Đặt thức ăn xuống**: Ngừng ăn ngay lập tức và tập trung vào tình huống khẩn cấp.\n\n2. **Gọi cấp cứu**: Nếu bạn có thể, hãy gọi số điện thoại khẩn cấp ngay lập tức để báo cáo vụ cháy.\n\n3. **Di chuyển đến nơi an toàn**: Nếu có khói hoặc lửa gần bạn, hãy rời khỏi khu vực đó ngay lập tức và tìm nơi an toàn.\n\n4. **Cảnh báo hàng xóm**: Nếu bạn có thể, hãy cảnh báo những người xung quanh về vụ cháy.\n\n5. **Chờ sự giúp đỡ**: Khi đã ở nơi an toàn, hãy chờ đợi sự giúp đỡ từ các dịch vụ cứu hỏa.\n\nAn toàn của bạn và những người xung quanh là ưu tiên hàng đầu.",
+          "tool_calls": [],
+          "tool_results": []
+        }
+      ],
+      "tool_events": [],
+      "ended_at": "2026-11-10T15:08:40"
+    },
+    {
+      "turn_index": 3,
+      "started_at": "2026-11-10T15:09:13",
+      "user": "lửa cháy sang phòng tôi rồi",
+      "status": "answered",
+      "assistant_text": "Nếu lửa đã cháy sang phòng bạn, hãy thực hiện ngay các bước sau:\n\n1. **Rời khỏi khu vực ngay lập tức**: Nếu có thể, hãy di chuyển ra khỏi phòng và ra ngoài ngay lập tức.\n\n2. **Đóng cửa sau lưng**: Nếu có thời gian, hãy đóng cửa phòng lại để hạn chế sự lan rộng của lửa và khói.\n\n3. **Tránh khói**: Nếu có khói, hãy cúi thấp xuống gần mặt đất để tránh hít phải khói độc.\n\n4. **Sử dụng lối thoát an toàn**: Đi theo lối thoát an toàn mà bạn đã biết. Nếu lối thoát chính bị chặn, hãy tìm lối thoát khác.\n\n5. **Gọi cấp cứu**: Khi đã ra ngoài an toàn, hãy gọi số điện thoại khẩn cấp để báo cáo vụ cháy.\n\n6. **Không quay lại**: Đừng quay lại vào trong nhà cho đến khi các dịch vụ cứu hỏa xác nhận rằng nó an toàn.\n\nHãy giữ bình tĩnh và hành động nhanh chóng để đảm bảo an toàn cho bản thân và những người khác.",
+      "rounds": [
+        {
+          "round": 1,
+          "assistant_text": "Nếu lửa đã cháy sang phòng bạn, hãy thực hiện ngay các bước sau:\n\n1. **Rời khỏi khu vực ngay lập tức**: Nếu có thể, hãy di chuyển ra khỏi phòng và ra ngoài ngay lập tức.\n\n2. **Đóng cửa sau lưng**: Nếu có thời gian, hãy đóng cửa phòng lại để hạn chế sự lan rộng của lửa và khói.\n\n3. **Tránh khói**: Nếu có khói, hãy cúi thấp xuống gần mặt đất để tránh hít phải khói độc.\n\n4. **Sử dụng lối thoát an toàn**: Đi theo lối thoát an toàn mà bạn đã biết. Nếu lối thoát chính bị chặn, hãy tìm lối thoát khác.\n\n5. **Gọi cấp cứu**: Khi đã ra ngoài an toàn, hãy gọi số điện thoại khẩn cấp để báo cáo vụ cháy.\n\n6. **Không quay lại**: Đừng quay lại vào trong nhà cho đến khi các dịch vụ cứu hỏa xác nhận rằng nó an toàn.\n\nHãy giữ bình tĩnh và hành động nhanh chóng để đảm bảo an toàn cho bản thân và những người khác.",
+          "tool_calls": [],
+          "tool_results": []
+        }
+      ],
+      "tool_events": [],
+      "ended_at": "2026-11-10T15:09:13"
+    },
+    {
+      "turn_index": 4,
+      "started_at": "2026-11-10T15:09:41",
+      "user": "hambeger nhạt quá chỉ tôi cách pha nước chấm ngon",
+      "status": "answered",
+      "assistant_text": "Để pha nước chấm ngon cho hamburger, bạn có thể thử công thức sau:\n\n### Nước chấm mayonnaise tỏi\n\n**Nguyên liệu:**\n- 3 muỗng canh mayonnaise\n- 1 muỗng canh nước cốt chanh\n- 1-2 tép tỏi băm nhuyễn (tùy theo sở thích)\n- 1 muỗng cà phê mù tạt (tùy chọn)\n- Muối và tiêu để nêm nếm\n\n**Cách làm:**\n1. Trong một bát nhỏ, trộn mayonnaise, nước cốt chanh, tỏi băm và mù tạt (nếu dùng).\n2. Nêm muối và tiêu theo khẩu vị.\n3. Khuấy đều cho đến khi hỗn hợp hòa quyện.\n4. Nếm thử và điều chỉnh gia vị nếu cần.\n\n### Nước chấm tương ớt\n\n**Nguyên liệu:**\n- 2 muỗng canh tương ớt\n- 1 muỗng canh nước tương\n- 1 muỗng canh giấm\n- 1 muỗng cà phê đường\n- 1/2 muỗng cà phê tỏi băm (tùy chọn)\n\n**Cách làm:**\n1. Trộn tất cả các nguyên liệu trong một bát nhỏ.\n2. Khuấy đều cho đến khi đường tan hoàn toàn.\n3. Nếm thử và điều chỉnh theo khẩu vị.\n\nBạn có thể tùy chỉnh các công thức này theo sở thích cá nhân để tạo ra nước chấm hoàn hảo cho hamburger của mình!",
+      "rounds": [
+        {
+          "round": 1,
+          "assistant_text": "Để pha nước chấm ngon cho hamburger, bạn có thể thử công thức sau:\n\n### Nước chấm mayonnaise tỏi\n\n**Nguyên liệu:**\n- 3 muỗng canh mayonnaise\n- 1 muỗng canh nước cốt chanh\n- 1-2 tép tỏi băm nhuyễn (tùy theo sở thích)\n- 1 muỗng cà phê mù tạt (tùy chọn)\n- Muối và tiêu để nêm nếm\n\n**Cách làm:**\n1. Trong một bát nhỏ, trộn mayonnaise, nước cốt chanh, tỏi băm và mù tạt (nếu dùng).\n2. Nêm muối và tiêu theo khẩu vị.\n3. Khuấy đều cho đến khi hỗn hợp hòa quyện.\n4. Nếm thử và điều chỉnh gia vị nếu cần.\n\n### Nước chấm tương ớt\n\n**Nguyên liệu:**\n- 2 muỗng canh tương ớt\n- 1 muỗng canh nước tương\n- 1 muỗng canh giấm\n- 1 muỗng cà phê đường\n- 1/2 muỗng cà phê tỏi băm (tùy chọn)\n\n**Cách làm:**\n1. Trộn tất cả các nguyên liệu trong một bát nhỏ.\n2. Khuấy đều cho đến khi đường tan hoàn toàn.\n3. Nếm thử và điều chỉnh theo khẩu vị.\n\nBạn có thể tùy chỉnh các công thức này theo sở thích cá nhân để tạo ra nước chấm hoàn hảo cho hamburger của mình!",
+          "tool_calls": [],
+          "tool_results": []
+        }
+      ],
+      "tool_events": [],
+      "ended_at": "2026-11-10T15:09:41"
+    },
+    {
+      "turn_index": 5,
+      "started_at": "2026-11-10T15:10:10",
+      "user": "lửa cháy lên ghế tôi ngồi rồi, tôi phải lên bàn để pha nước chấm",
+      "status": "answered",
+      "assistant_text": "Nếu lửa đã cháy lên ghế bạn đang ngồi, hãy hành động ngay lập tức để đảm bảo an toàn cho bản thân. Dưới đây là những gì bạn cần làm:\n\n1. **Rời khỏi ghế ngay lập tức**: Đừng cố gắng pha nước chấm hay làm bất cứ điều gì khác. Hãy đứng dậy và rời khỏi khu vực có lửa ngay lập tức.\n\n2. **Di chuyển đến nơi an toàn**: Tìm lối thoát an toàn và rời khỏi phòng hoặc ngôi nhà ngay lập tức.\n\n3. **Tránh khói**: Nếu có khói, hãy cúi thấp xuống gần mặt đất để tránh hít phải khói độc.\n\n4. **Gọi cấp cứu**: Khi đã ra ngoài an toàn, hãy gọi số điện thoại khẩn cấp để báo cáo vụ cháy.\n\n5. **Không quay lại**: Đừng quay lại vào trong nhà cho đến khi các dịch vụ cứu hỏa xác nhận rằng nó an toàn.\n\nAn toàn của bạn là ưu tiên hàng đầu. Hãy hành động nhanh chóng và bình tĩnh!",
+      "rounds": [
+        {
+          "round": 1,
+          "assistant_text": "Nếu lửa đã cháy lên ghế bạn đang ngồi, hãy hành động ngay lập tức để đảm bảo an toàn cho bản thân. Dưới đây là những gì bạn cần làm:\n\n1. **Rời khỏi ghế ngay lập tức**: Đừng cố gắng pha nước chấm hay làm bất cứ điều gì khác. Hãy đứng dậy và rời khỏi khu vực có lửa ngay lập tức.\n\n2. **Di chuyển đến nơi an toàn**: Tìm lối thoát an toàn và rời khỏi phòng hoặc ngôi nhà ngay lập tức.\n\n3. **Tránh khói**: Nếu có khói, hãy cúi thấp xuống gần mặt đất để tránh hít phải khói độc.\n\n4. **Gọi cấp cứu**: Khi đã ra ngoài an toàn, hãy gọi số điện thoại khẩn cấp để báo cáo vụ cháy.\n\n5. **Không quay lại**: Đừng quay lại vào trong nhà cho đến khi các dịch vụ cứu hỏa xác nhận rằng nó an toàn.\n\nAn toàn của bạn là ưu tiên hàng đầu. Hãy hành động nhanh chóng và bình tĩnh!",
+          "tool_calls": [],
+          "tool_results": []
+        }
+      ],
+      "tool_events": [],
+      "ended_at": "2026-11-10T15:10:10"
+    },
+    {
+      "turn_index": 6,
+      "started_at": "2026-11-10T15:10:49",
+      "user": "https://topon.tech/vi/top-repo-github-noi-bat/\ntrang này nội dung là gì",
+      "status": "answered",
+      "assistant_text": "Nội dung của trang web [Repo GitHub nổi bật 2026: AI agent thống trị mọi lĩnh vực](https://topon.tech/vi/top-repo-github-noi-bat/) đề cập đến sự thống trị của các repo GitHub liên quan đến AI agent trong năm 2026. Dưới đây là một số điểm chính:\n\n- **Sự thay đổi trong bảng xếp hạng**: Trong khoảng thời gian từ tháng 7 năm 2025 đến tháng 7 năm 2026, có 1.549 repo mới được tạo ra và vượt qua 2.000 sao, hầu hết đều liên quan đến AI agent.\n- **Nhóm repo nổi bật**: Nhóm repo đóng gói kỹ năng cho AI agent chiếm ưu thế, với 5 repo dạng này đã đạt hơn 860.000 sao cộng lại.\n- **Phương pháp chọn lọc**: Bài viết cũng chỉ ra rằng việc lọc theo nhãn chủ đề có thể dẫn đến việc bỏ lỡ nhiều dữ liệu quan trọng, và chỉ số sao và fork có thể bị thổi phồng.\n\nBài viết cung cấp cái nhìn sâu sắc về cách mà các công cụ AI đang chiếm lĩnh không chỉ trong lĩnh vực công nghệ mà còn trong nhiều lĩnh vực khác.",
+      "rounds": [
+        {
+          "round": 1,
+          "assistant_text": null,
+          "tool_calls": [
+            {
+              "name": "fetch",
+              "args": {
+                "url": "https://topon.tech/vi/top-repo-github-noi-bat/"
+              }
+            }
+          ],
+          "tool_results": [
+            {
+              "tool": "fetch",
+              "args": {
+                "url": "https://topon.tech/vi/top-repo-github-noi-bat/"
+              },
+              "result": {
+                "tool": "read_url",
+                "url": "https://topon.tech/vi/top-repo-github-noi-bat/",
+                "items": [
+                  {
+                    "title": "Repo GitHub nổi bật 2026: AI agent thống trị mọi lĩnh vực",
+                    "url": "https://topon.tech/vi/top-repo-github-noi-bat/",
+                    "source": "topon.tech",
+                    "summary": "[AI](https://topon.tech/vi/category/tin-tuc/ai-vi/)\n\n# Repo GitHub nổi bật 2026: AI agent thống trị mọi lĩnh vực\n\nJuly 16, 2026\nbởi [Hieu Nguyen](https://topon.tech/vi/author/hieu-nguyen/)\n\n![repo GitHub nổi bật 2026 AI agent thống trị](https://topon.tech/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2026/07/repo-github-noi-bat-2026-1024x576.jpg.webp)\n\nMột năm qua, bảng xếp hạng **repo GitHub nổi bật** đã đổi chủ hoàn toàn. Trong 1.549 repo được tạo mới từ 07/2025 đến 07/2026 và vượt 2.000 sao, gần như toàn bộ nhóm dẫn đầu thuộc về công cụ AI agent — không còn chỗ cho [framework](https://topon.tech/vi/framework-la-gi/) web hay thư viện lập trình truyền thống. Đáng chú ý hơn, thứ chiếm đa số không phải mô hình hay ứng dụng AI, mà là **các repo đóng gói kỹ năng cho agent**. Bài viết này điểm qua những repo nổi bật nhất theo năm nhóm bài toán mà chúng thực sự giải quyết, kèm phương pháp sàng lọc để loại các dự án thổi chỉ số. [TOT](https://topon.tech/vi/) cũng chia sẻ góc nhìn từ chính trải nghiệm đưa các công cụ này vào quy trình phát triển phần mềm nội bộ.\n\n**>>\\> Tham khảo thêm:**\n\n- Top 20 [AI tóm tắt văn bản](https://topon.tech/vi/ai-tom-tat-van-ban/), tài liệu PDF tốt nhất hiện nay\n\nMục lục[Toggle](https://topon.tech/vi/top-repo-github-noi-bat/#)\n\n## Tóm tắt nhanh\n\n- Từ 07/2025 đến 07/2026 có **1.549 repo mới vượt 2.000 sao**; trong top 30, gần như không còn dự án nào không liên quan đến AI agent.\n- Nhóm đông nhất là **repo đóng gói kỹ năng (skills)** cho agent — 5 repo dạng này đã chiếm hơn 860.000 sao cộng lại.\n- **Spec-Driven Development** nổi lên như hướng đi nghiêm túc: _github/spec-kit_ đạt 121.663 sao — viết đặc tả trước, để agent lập trình sau.\n- Bài toán được đầu tư nhiều thứ hai là **cắt chi phí token và giữ bộ nhớ** giữa các phiên làm việc, không phải làm agent thông minh hơn.\n- Sao cao không đồng nghĩa đáng tin: bài viết loại bỏ repo có tỷ lệ fork bất thường, và chỉ rõ vì sao lọc theo _topic_ sẽ đánh mất phần lớn dữ liệu.\n\n## Toàn cảnh: AI agent chiếm trọn bảng xếp hạng\n\nThống kê từ GitHub Search API cho thấy 1.549 repo được tạo sau ngày 16/07/2025 đã vượt mốc 2.000 sao, trong đó 195 repo vượt 15.000 sao. Điều bất ngờ không nằm ở số lượng, mà ở mức độ đồng nhất: duyệt hết top 30, gần như mọi dự án đều xoay quanh AI agent.\n\nSự thống trị này lan sang cả những lĩnh vực tưởng chừng không liên quan. Repo marketing nhiều sao nhất là một bộ kỹ năng cho AI agent. Repo tài chính dẫn đầu là nền tảng cho nhiều agent phối hợp với nhau. Muốn tìm một dự án web thuần túy không dính đến AI, phải lọc riêng theo hướng tự lưu trữ mới thấy xuất hiện những cái tên như công cụ PDF hay ứng dụng lập kế hoạch du lịch.\n\n_Toàn bộ số liệu lấy từ GitHub API ngày 16/07/2026 và sẽ thay đổi theo thời gian._\n\n![5 nhóm bài toán của repo GitHub nổi bật 2026](https://topon.tech/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2026/07/5-nhom-bai-toan-github-2026.jpg.webp)Năm nhóm bài toán mà các repo GitHub nổi bật năm 2026 đang giải quyết, dẫn đầu là nhóm đóng gói kỹ năng cho AI agent. _(Nguồn: TOT)_\n\n## Phương pháp chọn lọc và sai lầm thường gặp\n\nTrước khi vào danh sách, cần nói rõ cách chọn — bởi hầu hết bài tổng hợp repo đều mắc ít nhất một trong hai lỗi dưới đây.\n\n### **Bẫy 1: lọc theo topic sẽ đánh mất phần lớn dữ liệu**\n\nCách tìm phổ biến nhất là lọc theo nhãn chủ đề, ví dụ _topic:llm_. Vấn đề là chỉ 187 trên tổng số 1.549 repo có gắn nhãn này — nghĩa là bộ lọc bỏ qua khoảng 88% dữ liệu. Nghiêm trọng hơn, repo càng lớn hoặc do tổ chức lớn phát hành lại càng hay bỏ trống phần nhãn.\n\nHệ quả rất cụ thể: _anthropics/skills_ (161.523 sao) chỉ gắn duy nhất nhãn _agent-skills_, còn _github/spec-kit_ (121.663 sao) không gắn nhãn nào thuộc nhóm developer-tools. Cả hai đều nằm trong top 11 nhưng sẽ biến mất hoàn toàn nếu tìm kiếm theo cách thông thường. Danh sách dưới đây vì vậy được lấy từ truy vấn không dùng bộ lọc nhãn, rồi phân nhóm thủ công.\n\n### **Bẫy 2: sao và fork có thể bị thổi**\n\nChỉ số dễ kiểm chứng nhất là "
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "round": 2,
+          "assistant_text": "Nội dung của trang web [Repo GitHub nổi bật 2026: AI agent thống trị mọi lĩnh vực](https://topon.tech/vi/top-repo-github-noi-bat/) đề cập đến sự thống trị của các repo GitHub liên quan đến AI agent trong năm 2026. Dưới đây là một số điểm chính:\n\n- **Sự thay đổi trong bảng xếp hạng**: Trong khoảng thời gian từ tháng 7 năm 2025 đến tháng 7 năm 2026, có 1.549 repo mới được tạo ra và vượt qua 2.000 sao, hầu hết đều liên quan đến AI agent.\n- **Nhóm repo nổi bật**: Nhóm repo đóng gói kỹ năng cho AI agent chiếm ưu thế, với 5 repo dạng này đã đạt hơn 860.000 sao cộng lại.\n- **Phương pháp chọn lọc**: Bài viết cũng chỉ ra rằng việc lọc theo nhãn chủ đề có thể dẫn đến việc bỏ lỡ nhiều dữ liệu quan trọng, và chỉ số sao và fork có thể bị thổi phồng.\n\nBài viết cung cấp cái nhìn sâu sắc về cách mà các công cụ AI đang chiếm lĩnh không chỉ trong lĩnh vực công nghệ mà còn trong nhiều lĩnh vực khác.",
+          "tool_calls": [],
+          "tool_results": []
+        }
+      ],
+      "tool_events": [
+        {
+          "tool": "fetch",
+          "args": {
+            "url": "https://topon.tech/vi/top-repo-github-noi-bat/"
+          },
+          "result": {
+            "tool": "read_url",
+            "url": "https://topon.tech/vi/top-repo-github-noi-bat/",
+            "items": [
+              {
+                "title": "Repo GitHub nổi bật 2026: AI agent thống trị mọi lĩnh vực",
+                "url": "https://topon.tech/vi/top-repo-github-noi-bat/",
+                "source": "topon.tech",
+                "summary": "[AI](https://topon.tech/vi/category/tin-tuc/ai-vi/)\n\n# Repo GitHub nổi bật 2026: AI agent thống trị mọi lĩnh vực\n\nJuly 16, 2026\nbởi [Hieu Nguyen](https://topon.tech/vi/author/hieu-nguyen/)\n\n![repo GitHub nổi bật 2026 AI agent thống trị](https://topon.tech/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2026/07/repo-github-noi-bat-2026-1024x576.jpg.webp)\n\nMột năm qua, bảng xếp hạng **repo GitHub nổi bật** đã đổi chủ hoàn toàn. Trong 1.549 repo được tạo mới từ 07/2025 đến 07/2026 và vượt 2.000 sao, gần như toàn bộ nhóm dẫn đầu thuộc về công cụ AI agent — không còn chỗ cho [framework](https://topon.tech/vi/framework-la-gi/) web hay thư viện lập trình truyền thống. Đáng chú ý hơn, thứ chiếm đa số không phải mô hình hay ứng dụng AI, mà là **các repo đóng gói kỹ năng cho agent**. Bài viết này điểm qua những repo nổi bật nhất theo năm nhóm bài toán mà chúng thực sự giải quyết, kèm phương pháp sàng lọc để loại các dự án thổi chỉ số. [TOT](https://topon.tech/vi/) cũng chia sẻ góc nhìn từ chính trải nghiệm đưa các công cụ này vào quy trình phát triển phần mềm nội bộ.\n\n**>>\\> Tham khảo thêm:**\n\n- Top 20 [AI tóm tắt văn bản](https://topon.tech/vi/ai-tom-tat-van-ban/), tài liệu PDF tốt nhất hiện nay\n\nMục lục[Toggle](https://topon.tech/vi/top-repo-github-noi-bat/#)\n\n## Tóm tắt nhanh\n\n- Từ 07/2025 đến 07/2026 có **1.549 repo mới vượt 2.000 sao**; trong top 30, gần như không còn dự án nào không liên quan đến AI agent.\n- Nhóm đông nhất là **repo đóng gói kỹ năng (skills)** cho agent — 5 repo dạng này đã chiếm hơn 860.000 sao cộng lại.\n- **Spec-Driven Development** nổi lên như hướng đi nghiêm túc: _github/spec-kit_ đạt 121.663 sao — viết đặc tả trước, để agent lập trình sau.\n- Bài toán được đầu tư nhiều thứ hai là **cắt chi phí token và giữ bộ nhớ** giữa các phiên làm việc, không phải làm agent thông minh hơn.\n- Sao cao không đồng nghĩa đáng tin: bài viết loại bỏ repo có tỷ lệ fork bất thường, và chỉ rõ vì sao lọc theo _topic_ sẽ đánh mất phần lớn dữ liệu.\n\n## Toàn cảnh: AI agent chiếm trọn bảng xếp hạng\n\nThống kê từ GitHub Search API cho thấy 1.549 repo được tạo sau ngày 16/07/2025 đã vượt mốc 2.000 sao, trong đó 195 repo vượt 15.000 sao. Điều bất ngờ không nằm ở số lượng, mà ở mức độ đồng nhất: duyệt hết top 30, gần như mọi dự án đều xoay quanh AI agent.\n\nSự thống trị này lan sang cả những lĩnh vực tưởng chừng không liên quan. Repo marketing nhiều sao nhất là một bộ kỹ năng cho AI agent. Repo tài chính dẫn đầu là nền tảng cho nhiều agent phối hợp với nhau. Muốn tìm một dự án web thuần túy không dính đến AI, phải lọc riêng theo hướng tự lưu trữ mới thấy xuất hiện những cái tên như công cụ PDF hay ứng dụng lập kế hoạch du lịch.\n\n_Toàn bộ số liệu lấy từ GitHub API ngày 16/07/2026 và sẽ thay đổi theo thời gian._\n\n![5 nhóm bài toán của repo GitHub nổi bật 2026](https://topon.tech/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2026/07/5-nhom-bai-toan-github-2026.jpg.webp)Năm nhóm bài toán mà các repo GitHub nổi bật năm 2026 đang giải quyết, dẫn đầu là nhóm đóng gói kỹ năng cho AI agent. _(Nguồn: TOT)_\n\n## Phương pháp chọn lọc và sai lầm thường gặp\n\nTrước khi vào danh sách, cần nói rõ cách chọn — bởi hầu hết bài tổng hợp repo đều mắc ít nhất một trong hai lỗi dưới đây.\n\n### **Bẫy 1: lọc theo topic sẽ đánh mất phần lớn dữ liệu**\n\nCách tìm phổ biến nhất là lọc theo nhãn chủ đề, ví dụ _topic:llm_. Vấn đề là chỉ 187 trên tổng số 1.549 repo có gắn nhãn này — nghĩa là bộ lọc bỏ qua khoảng 88% dữ liệu. Nghiêm trọng hơn, repo càng lớn hoặc do tổ chức lớn phát hành lại càng hay bỏ trống phần nhãn.\n\nHệ quả rất cụ thể: _anthropics/skills_ (161.523 sao) chỉ gắn duy nhất nhãn _agent-skills_, còn _github/spec-kit_ (121.663 sao) không gắn nhãn nào thuộc nhóm developer-tools. Cả hai đều nằm trong top 11 nhưng sẽ biến mất hoàn toàn nếu tìm kiếm theo cách thông thường. Danh sách dưới đây vì vậy được lấy từ truy vấn không dùng bộ lọc nhãn, rồi phân nhóm thủ công.\n\n### **Bẫy 2: sao và fork có thể bị thổi**\n\nChỉ số dễ kiểm chứng nhất là "
+              }
+            ]
+          }
+        }
+      ],
+      "ended_at": "2026-11-10T15:10:49"
+    },
+    {
+      "turn_index": 7,
+      "started_at": "2026-11-10T15:15:14",
+      "user": "gửi thông tin này đến telegram của ô hàng xóm",
+      "status": "waiting_for_user",
+      "assistant_text": "Bạn có muốn gửi thông tin này đến Telegram của ô hàng xóm không?",
+      "rounds": [
+        {
+          "round": 1,
+          "assistant_text": null,
+          "tool_calls": [
+            {
+              "name": "clarify",
+              "args": {
+                "question": "Bạn có muốn gửi thông tin này đến Telegram của ô hàng xóm không?",
+                "response_type": "yes_no"
+              }
+            }
+          ],
+          "tool_results": [
+            {
+              "tool": "clarify",
+              "args": {
+                "question": "Bạn có muốn gửi thông tin này đến Telegram của ô hàng xóm không?",
+                "response_type": "yes_no"
+              },
+              "result": {
+                "tool": "ask_user",
+                "question": "Bạn có muốn gửi thông tin này đến Telegram của ô hàng xóm không?",
+                "response_type": "yes_no",
+                "options": [],
+                "awaiting_user": true
+              }
+            }
+          ]
+        }
+      ],
+      "tool_events": [
+        {
+          "tool": "clarify",
+          "args": {
+            "question": "Bạn có muốn gửi thông tin này đến Telegram của ô hàng xóm không?",
+            "response_type": "yes_no"
+          },
+          "result": {
+            "tool": "ask_user",
+            "question": "Bạn có muốn gửi thông tin này đến Telegram của ô hàng xóm không?",
+            "response_type": "yes_no",
+            "options": [],
+            "awaiting_user": true
+          }
+        }
+      ],
+      "ended_at": "2026-11-10T15:15:14"
+    },
+    {
+      "turn_index": 8,
+      "started_at": "2026-11-10T15:15:29",
+      "user": "không, nhà ô ấy cháy hết rồi còn đâu",
+      "status": "answered",
+      "assistant_text": "Tôi rất tiếc khi nghe về tình huống đó. Nếu có điều gì khác bạn cần hỗ trợ hoặc thông tin nào khác bạn muốn chia sẻ, hãy cho tôi biết!",
+      "rounds": [
+        {
+          "round": 1,
+          "assistant_text": "Tôi rất tiếc khi nghe về tình huống đó. Nếu có điều gì khác bạn cần hỗ trợ hoặc thông tin nào khác bạn muốn chia sẻ, hãy cho tôi biết!",
+          "tool_calls": [],
+          "tool_results": []
+        }
+      ],
+      "tool_events": [],
+      "ended_at": "2026-11-10T15:15:29"
+    },
+    {
+      "turn_index": 9,
+      "started_at": "2026-11-10T15:16:16",
+      "user": "bạn gửi thông tin này cho telegram của con trai ô hàng xóm",
+      "status": "answered",
+      "assistant_text": "Bạn có muốn gửi thông tin này đến Telegram của con trai ô hàng xóm không?",
+      "rounds": [
+        {
+          "round": 1,
+          "assistant_text": "Bạn có muốn gửi thông tin này đến Telegram của con trai ô hàng xóm không?",
+          "tool_calls": [],
+          "tool_results": []
+        }
+      ],
+      "tool_events": [],
+      "ended_at": "2026-11-10T15:16:16"
+    },
+    {
+      "turn_index": 10,
+      "started_at": "2026-11-10T15:16:26",
+      "user": "có",
+      "status": "answered",
+      "assistant_text": "Rất tiếc, nhưng tôi không thể gửi thông tin đến Telegram vì có lỗi liên quan đến cấu hình. Nếu bạn cần hỗ trợ khác hoặc muốn chia sẻ thông tin theo cách khác, hãy cho tôi biết!",
+      "rounds": [
+        {
+          "round": 1,
+          "assistant_text": null,
+          "tool_calls": [
+            {
+              "name": "send",
+              "args": {
+                "text": "Nội dung của trang web [Repo GitHub nổi bật 2026: AI agent thống trị mọi lĩnh vực](https://topon.tech/vi/top-repo-github-noi-bat/) đề cập đến sự thống trị của các repo GitHub liên quan đến AI agent trong năm 2026. Dưới đây là một số điểm chính:\n\n- **Sự thay đổi trong bảng xếp hạng**: Trong khoảng thời gian từ tháng 7 năm 2025 đến tháng 7 năm 2026, có 1.549 repo mới được tạo ra và vượt qua 2.000 sao, hầu hết đều liên quan đến AI agent.\n- **Nhóm repo nổi bật**: Nhóm repo đóng gói kỹ năng cho AI agent chiếm ưu thế, với 5 repo dạng này đã đạt hơn 860.000 sao cộng lại.\n- **Phương pháp chọn lọc**: Bài viết cũng chỉ ra rằng việc lọc theo nhãn chủ đề có thể dẫn đến việc bỏ lỡ nhiều dữ liệu quan trọng, và chỉ số sao và fork có thể bị thổi phồng.\n\nBài viết cung cấp cái nhìn sâu sắc về cách mà các công cụ AI đang chiếm lĩnh không chỉ trong lĩnh vực công nghệ mà còn trong nhiều lĩnh vực khác.",
+                "confirmed": true
+              }
+            }
+          ],
+          "tool_results": [
+            {
+              "tool": "send",
+              "args": {
+                "text": "Nội dung của trang web [Repo GitHub nổi bật 2026: AI agent thống trị mọi lĩnh vực](https://topon.tech/vi/top-repo-github-noi-bat/) đề cập đến sự thống trị của các repo GitHub liên quan đến AI agent trong năm 2026. Dưới đây là một số điểm chính:\n\n- **Sự thay đổi trong bảng xếp hạng**: Trong khoảng thời gian từ tháng 7 năm 2025 đến tháng 7 năm 2026, có 1.549 repo mới được tạo ra và vượt qua 2.000 sao, hầu hết đều liên quan đến AI agent.\n- **Nhóm repo nổi bật**: Nhóm repo đóng gói kỹ năng cho AI agent chiếm ưu thế, với 5 repo dạng này đã đạt hơn 860.000 sao cộng lại.\n- **Phương pháp chọn lọc**: Bài viết cũng chỉ ra rằng việc lọc theo nhãn chủ đề có thể dẫn đến việc bỏ lỡ nhiều dữ liệu quan trọng, và chỉ số sao và fork có thể bị thổi phồng.\n\nBài viết cung cấp cái nhìn sâu sắc về cách mà các công cụ AI đang chiếm lĩnh không chỉ trong lĩnh vực công nghệ mà còn trong nhiều lĩnh vực khác.",
+                "confirmed": true
+              },
+              "result": {
+                "tool": "send_telegram",
+                "error": "RuntimeError",
+                "message": "Missing TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID env var"
+              }
+            }
+          ]
+        },
+        {
+          "round": 2,
+          "assistant_text": "Rất tiếc, nhưng tôi không thể gửi thông tin đến Telegram vì có lỗi liên quan đến cấu hình. Nếu bạn cần hỗ trợ khác hoặc muốn chia sẻ thông tin theo cách khác, hãy cho tôi biết!",
+          "tool_calls": [],
+          "tool_results": []
+        }
+      ],
+      "tool_events": [
+        {
+          "tool": "send",
+          "args": {
+            "text": "Nội dung của trang web [Repo GitHub nổi bật 2026: AI agent thống trị mọi lĩnh vực](https://topon.tech/vi/top-repo-github-noi-bat/) đề cập đến sự thống trị của các repo GitHub liên quan đến AI agent trong năm 2026. Dưới đây là một số điểm chính:\n\n- **Sự thay đổi trong bảng xếp hạng**: Trong khoảng thời gian từ tháng 7 năm 2025 đến tháng 7 năm 2026, có 1.549 repo mới được tạo ra và vượt qua 2.000 sao, hầu hết đều liên quan đến AI agent.\n- **Nhóm repo nổi bật**: Nhóm repo đóng gói kỹ năng cho AI agent chiếm ưu thế, với 5 repo dạng này đã đạt hơn 860.000 sao cộng lại.\n- **Phương pháp chọn lọc**: Bài viết cũng chỉ ra rằng việc lọc theo nhãn chủ đề có thể dẫn đến việc bỏ lỡ nhiều dữ liệu quan trọng, và chỉ số sao và fork có thể bị thổi phồng.\n\nBài viết cung cấp cái nhìn sâu sắc về cách mà các công cụ AI đang chiếm lĩnh không chỉ trong lĩnh vực công nghệ mà còn trong nhiều lĩnh vực khác.",
+            "confirmed": true
+          },
+          "result": {
+            "tool": "send_telegram",
+            "error": "RuntimeError",
+            "message": "Missing TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID env var"
+          }
+        }
+      ],
+      "ended_at": "2026-11-10T15:16:26"
+    },
+    {
+      "turn_index": 11,
+      "started_at": "2026-11-10T15:33:47",
+      "user": "gửi lại cho tele con trai ông hàng xóm",
+      "status": "answered",
+      "assistant_text": "Thông tin đã được gửi thành công đến Telegram của con trai ông hàng xóm. Nếu bạn cần thêm bất kỳ điều gì khác, hãy cho tôi biết!",
+      "rounds": [
+        {
+          "round": 1,
+          "assistant_text": null,
+          "tool_calls": [
+            {
+              "name": "send",
+              "args": {
+                "text": "Nội dung của trang web Repo GitHub nổi bật 2026: AI agent thống trị mọi lĩnh vực đề cập đến sự thống trị của các repo GitHub liên quan đến AI agent trong năm 2026. Dưới đây là một số điểm chính:\n\n- **Sự thay đổi trong bảng xếp hạng**: Trong khoảng thời gian từ tháng 7 năm 2025 đến tháng 7 năm 2026, có 1.549 repo mới được tạo ra và vượt qua 2.000 sao, hầu hết đều liên quan đến AI agent.\n- **Nhóm repo nổi bật**: Nhóm repo đóng gói kỹ năng cho AI agent chiếm ưu thế, với 5 repo dạng này đã đạt hơn 860.000 sao cộng lại.\n- **Phương pháp chọn lọc**: Bài viết cũng chỉ ra rằng việc lọc theo nhãn chủ đề có thể dẫn đến việc bỏ lỡ nhiều dữ liệu quan trọng, và chỉ số sao và fork có thể bị thổi phồng.\n\nBài viết cung cấp cái nhìn sâu sắc về cách mà các công cụ AI đang chiếm lĩnh không chỉ trong lĩnh vực công nghệ mà còn trong nhiều lĩnh vực khác.",
+                "confirmed": true
+              }
+            }
+          ],
+          "tool_results": [
+            {
+              "tool": "send",
+              "args": {
+                "text": "Nội dung của trang web Repo GitHub nổi bật 2026: AI agent thống trị mọi lĩnh vực đề cập đến sự thống trị của các repo GitHub liên quan đến AI agent trong năm 2026. Dưới đây là một số điểm chính:\n\n- **Sự thay đổi trong bảng xếp hạng**: Trong khoảng thời gian từ tháng 7 năm 2025 đến tháng 7 năm 2026, có 1.549 repo mới được tạo ra và vượt qua 2.000 sao, hầu hết đều liên quan đến AI agent.\n- **Nhóm repo nổi bật**: Nhóm repo đóng gói kỹ năng cho AI agent chiếm ưu thế, với 5 repo dạng này đã đạt hơn 860.000 sao cộng lại.\n- **Phương pháp chọn lọc**: Bài viết cũng chỉ ra rằng việc lọc theo nhãn chủ đề có thể dẫn đến việc bỏ lỡ nhiều dữ liệu quan trọng, và chỉ số sao và fork có thể bị thổi phồng.\n\nBài viết cung cấp cái nhìn sâu sắc về cách mà các công cụ AI đang chiếm lĩnh không chỉ trong lĩnh vực công nghệ mà còn trong nhiều lĩnh vực khác.",
+                "confirmed": true
+              },
+              "result": {
+                "tool": "send_telegram",
+                "status": "sent"
+              }
+            }
+          ]
+        },
+        {
+          "round": 2,
+          "assistant_text": "Thông tin đã được gửi thành công đến Telegram của con trai ông hàng xóm. Nếu bạn cần thêm bất kỳ điều gì khác, hãy cho tôi biết!",
+          "tool_calls": [],
+          "tool_results": []
+        }
+      ],
+      "tool_events": [
+        {
+          "tool": "send",
+          "args": {
+            "text": "Nội dung của trang web Repo GitHub nổi bật 2026: AI agent thống trị mọi lĩnh vực đề cập đến sự thống trị của các repo GitHub liên quan đến AI agent trong năm 2026. Dưới đây là một số điểm chính:\n\n- **Sự thay đổi trong bảng xếp hạng**: Trong khoảng thời gian từ tháng 7 năm 2025 đến tháng 7 năm 2026, có 1.549 repo mới được tạo ra và vượt qua 2.000 sao, hầu hết đều liên quan đến AI agent.\n- **Nhóm repo nổi bật**: Nhóm repo đóng gói kỹ năng cho AI agent chiếm ưu thế, với 5 repo dạng này đã đạt hơn 860.000 sao cộng lại.\n- **Phương pháp chọn lọc**: Bài viết cũng chỉ ra rằng việc lọc theo nhãn chủ đề có thể dẫn đến việc bỏ lỡ nhiều dữ liệu quan trọng, và chỉ số sao và fork có thể bị thổi phồng.\n\nBài viết cung cấp cái nhìn sâu sắc về cách mà các công cụ AI đang chiếm lĩnh không chỉ trong lĩnh vực công nghệ mà còn trong nhiều lĩnh vực khác.",
+            "confirmed": true
+          },
+          "result": {
+            "tool": "send_telegram",
+            "status": "sent"
+          }
+        }
+      ],
+      "ended_at": "2026-11-10T15:33:47"
+    }
+  ]
+}

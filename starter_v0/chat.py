@@ -236,6 +236,12 @@ def main() -> None:
             print(f"\nAgent> {assistant_text}")
             history.append({"role": "user", "content": user_text})
             history.append({"role": "assistant", "content": assistant_text})
+        except KeyboardInterrupt:
+            turn_record.update({
+                "status": "interrupted",
+                "error": "KeyboardInterrupt: turn stopped before the provider returned",
+            })
+            print("\nINTERRUPTED> Turn stopped; transcript will be saved.")
         except Exception as exc:
             turn_record.update({
                 "status": "provider_error",
