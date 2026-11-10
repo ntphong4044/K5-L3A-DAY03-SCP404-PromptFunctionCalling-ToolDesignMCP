@@ -29,8 +29,11 @@
 
 **Link dùng thử (deploy):**
 
-UI local: chạy `streamlit run app.py` trong `starter_v0/`. Cloudflare tunnel chưa
-được mở trong môi trường này nên chưa có URL public.
+**https://k5-l3a-day03-scp404-promptfunctioncalling-tooldesignmcp.streamlit.app/**
+
+Deploy trên Streamlit Community Cloud từ nhánh `main`, main file `starter_v0/app.py`.
+API key được cấu hình qua Streamlit Secrets, không nằm trong repository.
+Chạy local: `streamlit run app.py` trong `starter_v0/`.
 
 ## A2. Tool agent có
 
@@ -150,7 +153,7 @@ Các bonus đã làm và bằng chứng tương ứng:
 |---|---|---|---|
 | send (Telegram) | `tests/test_tools_todo.py`, `transcripts/v6_openai_20261110T150755414747.transcript.json`, kiểm tra bot/channel thật | Live chat hỏi `yes_no`, sau đó chỉ gọi `send` với `confirmed=true`; unit test kiểm tra POST; bot test gửi thành công tới channel | Không gửi nếu chưa xác nhận; giữ token/chat ID ngoài source control |
 | arXiv/company policy | `tests/test_tools_todo.py` | policy có trust boundary; arXiv được đăng ký | Cần nguồn/network khi chạy live |
-| UI | `app.py`, `poster.html`, `transcripts/v6_openai_20261110T150755414747.transcript.json` | Streamlit UI có lịch sử chat, nút tạo chat mới, lưu transcript sau mỗi lượt và hiển thị tool dưới tin nhắn | Cần provider key khi chạy; chưa có public tunnel URL |
+| UI | `app.py`, `poster.html`, `transcripts/v6_openai_20261110T150755414747.transcript.json` | Streamlit UI có lịch sử chat, nút tạo chat mới, lưu transcript sau mỗi lượt và hiển thị tool dưới tin nhắn | Đã deploy public tại https://k5-l3a-day03-scp404-promptfunctioncalling-tooldesignmcp.streamlit.app/; key để trong Streamlit Secrets; transcript trên cloud không lưu lâu dài (mất khi app restart) |
 | Tool unit tests (`tests/`) | `tests/test_tools_todo.py`, `tests/test_tools_new.py`, `tests/test_tools_regression.py` | Test core stubs, 4 tool mới và 6 nhóm regression boundary | Mọi test offline; cần cài dependency từ `requirements.txt` |
 
 Tool unit tests: toàn bộ suite hiện đạt `156 passed, 0 failed, 0 skipped`.
