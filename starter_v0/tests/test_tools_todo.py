@@ -59,7 +59,15 @@ def test_send_confirmed_without_env_returns_error_and_no_request(fake_http) -> N
 
 def test_lookup_without_timeframe_omits_time_range(monkeypatch, fake_http) -> None:
     # timeframe=None -> request body has no "time_range" key.
-    pytest.skip(TODO)
+    monkeypatch.setenv("TAVILY_API_KEY", "test-key")
+    calls = fake_http(FakeResponse({"results": []}))
+
+    result = TOOL_FUNCTIONS["lookup"](query="AI", timeframe=None)
+
+    assert calls[0]["url"] == "https://api.tavily.com/search"
+    assert "time_range" not in calls[0]["json"]
+    assert calls[0]["json"]["query"] == "AI"
+    assert result["items"] == []
 
 
 # ---------------- fetch ----------------
@@ -67,24 +75,84 @@ def test_lookup_without_timeframe_omits_time_range(monkeypatch, fake_http) -> No
 def test_fetch_maps_firecrawl_response(monkeypatch, fake_http) -> None:
     # Mock {"data": {"markdown": "...", "metadata": {"title": "T", "sourceURL": "https://..."}}}
     # Assert title/url/source/summary in result["items"][0].
-    pytest.skip(TODO)
+    monkeypatch.setenv("FIRECRAWL_API_KEY", "fc-key")
+    calls = fake_http(FakeResponse({"data": {
+        "markdown": "# Hello\nbody text",
+        "metadata": {"title": "T", "sourceURL": "https://www.example.com/final"},
+    }}))
+
+    result = TOOL_FUNCTIONS["fetch"](url="https://www.example.com/post")
+
+    assert calls[0]["url"] == "https://api.firecrawl.dev/v1/scrape"
+    assert calls[0]["json"] == {"url": "https://www.example.com/post", "formats": ["markdown"]}
+    assert calls[0]["headers"]["Authorization"] == "Bearer fc-key"
+    assert result["items"][0] == {
+        "title": "T",
+        "url": "https://www.example.com/final",
+        "source": "example.com",
+        "summary": "# Hello\nbody text",
+    }
 
 
 def test_fetch_truncates_markdown_to_4000_chars(monkeypatch, fake_http) -> None:
-    pytest.skip(TODO)
+    monkeypatch.setenv("FIRECRAWL_API_KEY", "fc-key")
+    fake_http(FakeResponse({"data": {"markdown": "z" * 9000, "metadata": {}}}))
+
+    result = TOOL_FUNCTIONS["fetch"](url="https://example.com/long")
+
+    summary = result["items"][0]["summary"]
+    assert summary == "z" * 4000
+    # With no metadata, title/url fall back to the requested URL.
+    assert result["items"][0]["title"] == "https://example.com/long"
+    assert result["items"][0]["url"] == "https://example.com/long"
 
 
 # ---------------- timeline / social_search ----------------
 
+def _raw_tweets() -> list[dict]:
+    no_id = {"screen_name": "sama", "text": "no id here"}
+    valid = [
+        {"tweet_id": str(100 + i), "screen_name": "sama", "text": f"tweet {i}\nsecond line", "created_at": "2026-11-10"}
+        for i in range(6)
+    ]
+    return [no_id, *valid]
+
+
 def test_timeline_respects_limit_and_skips_items_without_id(monkeypatch, fake_http) -> None:
     # Mock {"timeline": [...]} with 1 item missing tweet_id and 6 valid items, limit=3.
     # Assert 3 items, and each url looks like https://x.com/<handle>/status/<id>.
-    pytest.skip(TODO)
+    monkeypatch.setenv("RAPIDAPI_KEY", "rk")
+    calls = fake_http(FakeResponse({"timeline": _raw_tweets()}))
+
+    result = TOOL_FUNCTIONS["timeline"](screenname="sama", limit=3)
+
+    assert calls[0]["url"] == "https://twitter-api45.p.rapidapi.com/timeline.php"
+    assert calls[0]["params"] == {"screenname": "sama"}
+    assert calls[0]["headers"]["x-rapidapi-key"] == "rk"
+    assert len(result["items"]) == 3
+    assert [item["url"] for item in result["items"]] == [
+        "https://x.com/sama/status/100",
+        "https://x.com/sama/status/101",
+        "https://x.com/sama/status/102",
+    ]
+    assert result["items"][0]["title"] == "tweet 0"
+    assert result["items"][0]["source"] == "@sama"
 
 
 def test_social_search_passes_search_type(monkeypatch, fake_http) -> None:
     # Assert the request params carry the query and search_type ("Top" / "Latest").
-    pytest.skip(TODO)
+    monkeypatch.setenv("RAPIDAPI_KEY", "rk")
+    calls = fake_http(FakeResponse({"timeline": _raw_tweets()}))
+
+    top = TOOL_FUNCTIONS["social_search"](query="GPT-5", search_type="Top", limit=2)
+    latest = TOOL_FUNCTIONS["social_search"](query="GPT-5")
+
+    assert calls[0]["url"] == "https://twitter-api45.p.rapidapi.com/search.php"
+    assert calls[0]["params"] == {"query": "GPT-5", "search_type": "Top"}
+    assert calls[1]["params"] == {"query": "GPT-5", "search_type": "Latest"}
+    assert top["search_type"] == "Top"
+    assert len(top["items"]) == 2
+    assert len(latest["items"]) == 5  # default limit
 
 
 # ---------------- policy (local knowledge + trust boundary) ----------------
