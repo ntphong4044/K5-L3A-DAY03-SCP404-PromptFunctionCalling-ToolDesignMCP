@@ -23,24 +23,53 @@ TODO = "TODO(student): implement this test"
 def test_clarify_choice_returns_options_and_awaits_user() -> None:
     # Call clarify with response_type="choice" and 2 options.
     # Assert: options are returned unchanged, awaiting_user is True.
-    pytest.skip(TODO)
+    clarify = TOOL_FUNCTIONS["clarify"]
+    options = ["Sam Altman", "Elon Musk"]
+    result = clarify(question="Bạn muốn xem tài khoản nào?", response_type="choice", options=options)
+
+    assert result["options"] == ["Sam Altman", "Elon Musk"]
+    assert result["response_type"] == "choice"
+    assert result["question"] == "Bạn muốn xem tài khoản nào?"
+    assert result["awaiting_user"] is True
 
 
 # ---------------- format ----------------
 
 def test_format_sections_groups_items_by_section() -> None:
     # Items with section "A", "B", "A" -> markdown has exactly one "## A" and one "## B".
-    pytest.skip(TODO)
+    items = [
+        {"title": "a1", "url": "https://a.com/1", "section": "A"},
+        {"title": "b1", "url": "https://b.com/1", "section": "B"},
+        {"title": "a2", "url": "https://a.com/2", "section": "A"},
+    ]
+    result = TOOL_FUNCTIONS["format"](items=items, template="sections")
+    md = result["markdown"]
+
+    assert md.count("## A") == 1
+    assert md.count("## B") == 1
+    # both A items are listed under the single "## A" heading, before "## B"
+    assert md.index("## A") < md.index("a1") < md.index("a2") < md.index("## B")
+    assert result["item_count"] == 3
 
 
 def test_format_thread_numbers_items() -> None:
     # template="thread" -> lines start with "1/", "2/", ...
-    pytest.skip(TODO)
+    items = [{"title": f"Tweet {i}", "url": f"https://x.com/a/status/{i}"} for i in range(3)]
+    result = TOOL_FUNCTIONS["format"](items=items, template="thread")
+    lines = [line for line in result["markdown"].splitlines() if line.strip()]
+
+    assert [line.split(" ", 1)[0] for line in lines] == ["1/", "2/", "3/"]
+    assert "Tweet 0" in lines[0] and "Tweet 2" in lines[2]
 
 
 def test_format_empty_items_does_not_crash() -> None:
     # items=None and items=[] -> item_count == 0, no exception.
-    pytest.skip(TODO)
+    format_tool = TOOL_FUNCTIONS["format"]
+    for empty in (None, []):
+        for template in ("brief", "sections", "bullets", "thread", "daily_ai_vn"):
+            result = format_tool(items=empty, template=template)
+            assert result["item_count"] == 0
+            assert isinstance(result["markdown"], str)
 
 
 # ---------------- send (guardrail) ----------------
@@ -48,11 +77,30 @@ def test_format_empty_items_does_not_crash() -> None:
 def test_send_confirmed_posts_to_telegram(monkeypatch, fake_http) -> None:
     # Set TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID, mock HTTP.
     # Assert: exactly one POST, URL contains the token, json has chat_id + text, status == "sent".
-    pytest.skip(TODO)
+    monkeypatch.setenv("TELEGRAM_BOT_TOKEN", "test-token")
+    monkeypatch.setenv("TELEGRAM_CHAT_ID", "12345")
+    calls = fake_http(FakeResponse({"ok": True}))
+
+    result = TOOL_FUNCTIONS["send"](text="Bản tin AI", confirmed=True)
+
+    assert len(calls) == 1
+    assert calls[0]["method"] == "POST"
+    assert "test-token" in calls[0]["url"]
+    assert calls[0]["url"].endswith("/sendMessage")
+    assert calls[0]["json"]["chat_id"] == "12345"
+    assert calls[0]["json"]["text"] == "Bản tin AI"
+    assert result["status"] == "sent"
 
 
 def test_send_confirmed_without_env_returns_error_and_no_request(fake_http) -> None:
-    pytest.skip(TODO)
+    calls = fake_http(FakeResponse({"ok": True}))
+
+    result = TOOL_FUNCTIONS["send"](text="Bản tin AI", confirmed=True)
+
+    assert calls == []
+    assert result["error"] == "RuntimeError"
+    assert "TELEGRAM_BOT_TOKEN" in result["message"]
+    assert "status" not in result
 
 
 # ---------------- lookup ----------------
@@ -90,18 +138,33 @@ def test_social_search_passes_search_type(monkeypatch, fake_http) -> None:
 # ---------------- policy (local knowledge + trust boundary) ----------------
 
 def test_policy_empty_query_returns_no_results() -> None:
-    pytest.skip(TODO)
+    policy = TOOL_FUNCTIONS["policy"]
+    for query in ("", "   ", "là gì"):  # empty, whitespace, only stopwords
+        result = policy(query=query)
+        assert result["results"] == []
+        assert "error" not in result
 
 
 def test_policy_area_filter_only_returns_that_area() -> None:
     # policy_area="data_privacy" -> every result has policy_area == "data_privacy".
-    pytest.skip(TODO)
+    result = TOOL_FUNCTIONS["policy"](query="API key policy data", policy_area="data_privacy", top_k=5)
+
+    assert result["policy_area"] == "data_privacy"
+    assert result["results"], "expected at least one data_privacy hit"
+    assert all(hit["policy_area"] == "data_privacy" for hit in result["results"])
 
 
 def test_policy_instruction_like_lines_go_to_untrusted_text() -> None:
     # One policy file contains a quoted line that tries to give the assistant orders.
     # Query that section (source_citation) and assert: that line is in untrusted_text, NOT in facts.
-    pytest.skip(TODO)
+    result = TOOL_FUNCTIONS["policy"](query="injection probe citation", policy_area="source_citation", top_k=5)
+    probe = [hit for hit in result["results"] if hit["section"] == "Injection probe"]
+
+    assert probe, "the Injection probe section should be retrieved"
+    hit = probe[0]
+    assert any("ignore" in line.lower() for line in hit["untrusted_text"])
+    assert "ignore" not in hit["facts"].lower()
+    assert "untrusted" in result["trust_boundary"].lower()
 
 
 # ---------------- YOUR NEW TOOL(S) ----------------
