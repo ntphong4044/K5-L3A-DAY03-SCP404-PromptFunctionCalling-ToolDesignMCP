@@ -147,3 +147,51 @@ tools:
         max_pages: {type: integer, default: 5, description: "Số trang tối đa cần đọc."}
         max_chars: {type: integer, default: 8000, description: "Số ký tự tối đa trả về."}
       required: [arxiv_url]
+
+  # ---------------- Bonus tools ----------------
+  - name: wikipedia
+    description: >-
+      Lấy phần tóm tắt đầu bài của MỘT bài Wikipedia (tiếng Anh hoặc tiếng Việt).
+      DÙNG KHI người dùng hỏi "X là gì / ai là X / giới thiệu về X" — kiến thức nền, khái niệm, nhân vật, địa danh.
+      KHÔNG DÙNG cho tin tức mới (dùng lookup), cho bài báo khoa học (dùng papers), hay khi người dùng đã đưa URL (dùng fetch).
+    parameters:
+      type: object
+      properties:
+        title: {type: string, default: "", description: "Tên bài viết, ví dụ 'Alan Turing', 'Hà Nội', 'Transformer (machine learning model)'. Chỉ tên chủ đề, không thêm 'wikipedia' hay 'là gì'."}
+        lang: {type: string, enum: [en, vi], default: "en", description: "'vi' khi người dùng hỏi bằng tiếng Việt về chủ đề Việt Nam hoặc yêu cầu bản tiếng Việt; còn lại 'en'."}
+      required: [title]
+
+  - name: hackernews
+    description: >-
+      Lấy danh sách bài nổi bật hoặc mới nhất trên Hacker News (tin công nghệ/lập trình/startup).
+      DÙNG KHI người dùng hỏi "Hacker News đang có gì", "top stories HN", "bài hot trên HN".
+      KHÔNG DÙNG cho tin tức web nói chung (dùng lookup) hay tweet (dùng social_search).
+    parameters:
+      type: object
+      properties:
+        limit: {type: integer, default: 5, description: "Số bài, 1-10. Lấy đúng con số người dùng nói (ví dụ 'top 3' → 3); không nói thì 5."}
+        kind: {type: string, enum: [top, new], default: "top", description: "'top' = trang nhất/nổi bật (mặc định); 'new' khi người dùng muốn bài mới đăng nhất."}
+      required: []
+
+  - name: github_repo
+    description: >-
+      Lấy thông tin công khai của MỘT repo GitHub: mô tả, số sao, fork, issue mở, ngôn ngữ, license, lần push cuối.
+      DÙNG KHI người dùng hỏi về một repo cụ thể ("repo psf/requests có bao nhiêu sao", đưa link github.com/owner/name).
+      KHÔNG DÙNG để đọc nội dung/README hay mã nguồn (dùng fetch), và không dùng để tìm repo theo chủ đề (dùng lookup).
+      Nếu người dùng chỉ nói tên dự án mà không rõ owner → gọi clarify, không đoán owner.
+    parameters:
+      type: object
+      properties:
+        repo: {type: string, default: "", description: "Dạng 'owner/name' (ví dụ 'langchain-ai/langchain') hoặc URL github.com đầy đủ."}
+      required: [repo]
+
+  - name: datetime_now
+    description: >-
+      Cho biết ngày giờ HIỆN TẠI (ngày, giờ, thứ) ở một múi giờ.
+      DÙNG KHI người dùng hỏi "bây giờ là mấy giờ", "hôm nay ngày bao nhiêu / thứ mấy", "giờ ở Tokyo".
+      KHÔNG DÙNG để tìm tin tức hay sự kiện (dùng lookup).
+    parameters:
+      type: object
+      properties:
+        timezone_name: {type: string, default: "UTC", description: "Tên múi giờ ('Asia/Ho_Chi_Minh', 'Asia/Tokyo', 'America/New_York', 'Europe/London', 'UTC') hoặc offset ('UTC+7'). Người dùng ở Việt Nam / không nói rõ → 'Asia/Ho_Chi_Minh'."}
+      required: [] 
