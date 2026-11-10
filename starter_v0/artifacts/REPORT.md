@@ -116,6 +116,23 @@ Only fill if your team did bonus.
 
 Tool unit tests: số test đã viết, số bug tìm được trong tool có sẵn (nếu có), và một ví dụ lỗi mà unit test bắt được nhưng eval không bắt được.
 
+### Challenge+: bug tìm được bằng input biên (Sơn)
+
+Cách làm: viết script gọi từng tool với input mà model hay gửi (`limit=0/-1/"abc"/999`, `max_results="5"`, query/URL rỗng, `@handle`, item `None`/chuỗi trong `items`), mock HTTP và ghi lại tool làm gì. Sau đó viết regression test trước (`tests/test_tools_regression.py`, 36 case, **30 case fail** trên code gốc), rồi mới sửa tool. Sau khi sửa, 36/36 pass.
+
+| # | Tool | Input biên | Hành vi gốc (bug) | Hậu quả thực tế | Sửa |
+|---|---|---|---|---|---|
+| B1 | timeline, social_search | `limit=-1` | `items[:-1]` bỏ item cuối, trả 7/8 item | User xin "5 tweet" nhưng nhận số lượng vô nghĩa; `limit=999` không có trần | `clamp_int`: <1 → mặc định 5, >20 → 20 |
+| B2 | timeline, social_search | `limit="abc"` | `int()` raise **sau** khi đã gọi RapidAPI | Tốn 1 request có quota rồi mới trả lỗi | Chuẩn hoá `limit` trước khi gọi HTTP, giá trị lạ → mặc định |
+| B3 | lookup | `max_results=0/-1/999` | Gửi nguyên `-1`/`999` lên Tavily (`0` bị `or 5` che) | Tavily trả 400 hoặc tốn credit | Chuẩn hoá về 1..20 |
+| B4 | lookup, timeline, social_search, fetch | `query=""`, `screenname=""`, `url=""`, `"ftp://x"` | Vẫn gọi API trả phí | Tốn credit Tavily/Firecrawl/RapidAPI cho request vô nghĩa | Trả error dict `ValueError`, **không gọi HTTP** |
+| B5 | timeline, social_search | `"@sama"`, `search_type="top"` | Gửi nguyên `@sama` và `top` (sai hoa/thường) | API không tìm thấy hoặc trả sai | Bỏ `@`; `search_type` chuẩn hoá về `Top`/`Latest` |
+| B6 | format | `items=[None, "text"]`, `summary=123`, `section=None` | **Raise `AttributeError`** (không trả error dict); `section=None` in ra `## None`; item thiếu url thành `"- s - "` | Agent loop có thể crash giữa chừng; bản tin xấu | Bỏ item không phải dict, ép `summary` về chuỗi, bỏ dấu ` - ` thừa |
+
+Không phải bug (đã kiểm tra): `max_results="5"` và `limit="3"` (chuỗi số) vẫn chạy đúng vì có `int()`; `policy top_k=0` cho 3 kết quả (mặc định) và `top_k=-1` cho 1 kết quả, chấp nhận được.
+
+Ví dụ lỗi eval không bắt được: B4. Model gọi `fetch(url="")` hoặc `lookup(query="")` đúng tên tool nên eval chấm PASS, nhưng code vẫn gọi API trả phí với đầu vào rỗng. Chỉ unit test (assert `calls == []`) mới bắt được.
+
 ## B6. Reflection
 
 **Which fixes belonged in `system_prompt.md`?**
